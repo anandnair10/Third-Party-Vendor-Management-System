@@ -15,4 +15,7 @@ import lombok.experimental.SuperBuilder;
 
 @Table(name = "admin")
 public class Admin extends User{
+    private String department;
+
+    private String designation;
 }
