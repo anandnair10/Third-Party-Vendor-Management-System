@@ -1,7 +1,6 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -12,25 +11,46 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "vendors")
 public class Vendor extends User{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "business_name", nullable = false)
+    private String businessName;
 
-    private String vendorName; // Business name
+    @Column(name = "business_structure") // e.g., Sole Proprietorship, Partnership, Pvt Ltd, etc.
+    private String businessStructure;
 
-    private String businessStructure; // Sole proprietorship, partnership, etc.
+    @Column(name = "established_year")
+    private Integer establishedYear;
 
-    private String established; // Year established
-
+    @Column(name = "primary_contact_name", nullable = false)
     private String primaryContactName;
 
+    @Column(name = "primary_contact_designation")
     private String primaryContactDesignation;
 
+    @Column(name = "phone_number", nullable = false)
+    private String phoneNumber;
+
+    @Column(name = "email_address", nullable = false, unique = true)
+    private String emailAddress;
+
+    @Column(name = "website")
     private String website;
 
+    @Column(name = "company_address", columnDefinition = "TEXT")
     private String companyAddress;
 
-    private String serviceType; // e.g. IT Services, Catering, etc.
+    @Column(name = "vendor_type") // e.g., Catering, Photography, IT Services
+    private String vendorType;
 
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    private String pricing; // Could be numeric if needed
+    @Column(name = "role") // Role in the system or contract
+    private String role;
+
+    @Column(name = "pricing", columnDefinition = "TEXT")
+    private String pricing; // Can be structured later (JSON, table, etc.)
 
 }
