@@ -1,7 +1,6 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +14,12 @@ import lombok.experimental.SuperBuilder;
 
 @Table(name = "admin")
 public class Admin extends User{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "admin_code", nullable = false, unique = true)
+    private String adminCode;
+
+    @Column(name = "department")
+    private String department;
 }
