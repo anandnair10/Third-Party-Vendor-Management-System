@@ -6,18 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "vendors")
-public class Vendor extends User{
-
+@Table(name = "employees")
+public class Employee extends User{
     private String name;
-    private String Category;
-    private String address;
+    private String department;
 
 }
