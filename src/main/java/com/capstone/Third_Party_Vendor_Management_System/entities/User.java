@@ -1,16 +1,15 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@MappedSuperclass // Not its own table, but inherited by Admin/Vendor/Employee
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users")
 public abstract class User {
