@@ -1,10 +1,21 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "ratings")
 public class Rating {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rating_id")
     private Long ratingId;
 
@@ -22,5 +33,4 @@ public class Rating {
 
     @Column(name = "rating_date")
     private LocalDate ratingDate;
-
 }
