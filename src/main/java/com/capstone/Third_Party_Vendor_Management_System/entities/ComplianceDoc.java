@@ -1,6 +1,6 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
-import com.capstone.Third_Party_Vendor_Management_System.entities.VerificationStatus;
+import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VerificationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
