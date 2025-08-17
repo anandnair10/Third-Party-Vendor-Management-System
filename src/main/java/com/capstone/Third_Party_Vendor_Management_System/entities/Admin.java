@@ -14,9 +14,7 @@ import lombok.experimental.SuperBuilder;
 
 @Table(name = "admin")
 public class Admin extends User{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     @Column(name = "admin_code", nullable = false, unique = true)
     private String adminCode;
 

@@ -11,9 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "vendors")
 public class Vendor extends User{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     @Column(name = "business_name", nullable = false)
     private String businessName;
 
