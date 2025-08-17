@@ -1,6 +1,7 @@
 package com.capstone.Third_Party_Vendor_Management_System.service;
 import com.capstone.Third_Party_Vendor_Management_System.repository.AdminRepository;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Admin;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
