@@ -58,13 +58,13 @@ public class EmployeeController {
     }
 
     // Login (basic example)
-    @PostMapping("/login")
-    public ResponseEntity<Employee> login(@RequestBody Employee loginRequest) {
-        Optional<Employee> employee = employeeRepository.findByUsernameAndPassword(
-                loginRequest.getUsername(), loginRequest.getPassword()
-        );
-        return employee.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(401).build());
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<Employee> login(@RequestBody Employee loginRequest) {
+//        Optional<Employee> employee = employeeRepository.findByUsernameAndPassword(
+//                loginRequest.getUsername(), loginRequest.getPassword()
+//        );
+//        return employee.map(ResponseEntity::ok)
+//                .orElseGet(() -> ResponseEntity.status(401).build());
+//    }
 }
 
