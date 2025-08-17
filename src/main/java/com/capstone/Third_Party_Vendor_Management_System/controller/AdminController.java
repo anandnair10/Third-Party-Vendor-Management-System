@@ -5,13 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/admins")
 public class AdminController {
 
     @Autowired
-    private final AdminService adminService;
+    private AdminService adminService;
 
     @PostMapping
     public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin){
@@ -23,13 +24,18 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAllAdmins());
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Admin> getAdminById(@PathVariable Long id){
-        return ResponseEntity.ok(adminService.getAdminById(id));
+    public ResponseEntity<Admin> getAdminById(@PathVariable Long id) {
+        Optional<Admin> adminOptional = adminService.getAdminById(id);
+        return adminOptional
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id){
-        return ResponseEntity.ok(adminService.updateAdmin(id,updatedAdmin));
+    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id, @RequestBody Admin updatedAdmin) {
+        return ResponseEntity.ok(adminService.updateAdmin(id, updatedAdmin));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Admin> deleteAdmin(@PathVariable Long id){
         adminService.deleteAdmin(id);
