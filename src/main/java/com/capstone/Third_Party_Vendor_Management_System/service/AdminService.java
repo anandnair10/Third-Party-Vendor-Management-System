@@ -9,6 +9,9 @@ import java.util.Optional;
 
 @Service
 
+
+public interface AdminService {
+
 public class AdminService {
 
     private AdminRepository adminRepository;
