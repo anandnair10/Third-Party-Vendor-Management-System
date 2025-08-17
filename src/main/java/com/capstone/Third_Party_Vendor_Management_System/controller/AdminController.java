@@ -10,8 +10,11 @@ import java.util.List;
 @RequestMapping("/api/admins")
 public class AdminController {
 
+    AdminService adminService;
     @Autowired
-    private final AdminService adminService;
+    public AdminController(AdminService adminService){
+        this.adminService=adminService;
+    }
 
     @PostMapping
     public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin){
@@ -27,8 +30,8 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAdminById(id));
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id){
-        return ResponseEntity.ok(adminService.updateAdmin(id,updatedAdmin));
+    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id,@RequestBody Admin admin){
+        return ResponseEntity.ok(adminService.updateAdmin(id,admin));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Admin> deleteAdmin(@PathVariable Long id){
