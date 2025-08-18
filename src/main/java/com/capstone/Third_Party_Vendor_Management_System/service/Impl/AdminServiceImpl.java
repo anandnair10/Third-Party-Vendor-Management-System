@@ -2,14 +2,17 @@ package com.capstone.Third_Party_Vendor_Management_System.service.Impl;
 
 import com.capstone.Third_Party_Vendor_Management_System.entities.Admin;
 import com.capstone.Third_Party_Vendor_Management_System.repository.AdminRepository;
+import com.capstone.Third_Party_Vendor_Management_System.service.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AdminServiceImpl {
+public class AdminServiceImpl implements AdminService {
 
+    @Autowired
     private AdminRepository adminRepository;
 
     public Admin saveAdmin(Admin admin){
