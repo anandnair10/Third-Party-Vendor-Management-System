@@ -1,32 +1,31 @@
 package com.capstone.Third_Party_Vendor_Management_System.service.Impl;
 
-import com.capstone.Third_Party_Vendor_Management_System.entities.ComplianceDoc;
-import com.capstone.Third_Party_Vendor_Management_System.repository.ComplianceDocRespository;
-import com.capstone.Third_Party_Vendor_Management_System.service.ComplianceDocService;
+import com.capstone.Third_Party_Vendor_Management_System.entities.Compliance;
+import com.capstone.Third_Party_Vendor_Management_System.repository.ComplianceRespository;
+import com.capstone.Third_Party_Vendor_Management_System.service.ComplianceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ComplianceDocServiceImpl implements ComplianceDocService {
+public class ComplianceServiceImpl implements ComplianceService {
 
     @Autowired
-    private ComplianceDocRespository complianceDocRepository;
+    private ComplianceRespository complianceDocRepository;
 
     @Override
-    public Optional<ComplianceDoc> getDocumentById(Long id) {
+    public Optional<Compliance> getDocumentById(Long id) {
         return complianceDocRepository.findById(id);
     }
 
     @Override
-    public ComplianceDoc createDocument(ComplianceDoc doc) {
+    public Compliance createDocument(Compliance doc) {
         return complianceDocRepository.save(doc);
     }
 
     @Override
-    public Optional<ComplianceDoc> updateDocument(Long id, ComplianceDoc updatedDoc) {
+    public Optional<Compliance> updateDocument(Long id, Compliance updatedDoc) {
         return complianceDocRepository.findById(id).map(doc -> {
             doc.setVendorId(updatedDoc.getVendorId());
             doc.setUploadDate(updatedDoc.getUploadDate());

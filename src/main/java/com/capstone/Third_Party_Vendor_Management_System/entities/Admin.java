@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 
 @Table(name = "admin")
 public class Admin extends User{
-
+    @E
     @Column(name = "admin_code", nullable = false, unique = true)
     private String adminCode;
 
