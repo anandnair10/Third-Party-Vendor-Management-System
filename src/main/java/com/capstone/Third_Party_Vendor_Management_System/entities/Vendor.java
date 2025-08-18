@@ -1,12 +1,14 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
+import com.capstone.Third_Party_Vendor_Management_System.entities.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "vendors")
@@ -45,8 +47,8 @@ public class Vendor extends User{
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "role") // Role in the system or contract
-    private String role;
+//    @Column(name = "role") // Role in the system or contract
+//    private String vendorrole;
 
     @Column(name = "pricing", columnDefinition = "TEXT")
     private String pricing; // Can be structured later (JSON, table, etc.)
