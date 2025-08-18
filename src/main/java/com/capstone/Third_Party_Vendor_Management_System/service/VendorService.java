@@ -9,5 +9,7 @@ public interface VendorService {
     Vendor registerVendor(Vendor vendor);
     Vendor getVendorById(Long vendorId);
     List<Vendor> getAllVendors();
+    Vendor updateVendor(Long VendorId, Vendor vendor);
+    Vendor deleteVendor(Long VendorId);
 
 }
