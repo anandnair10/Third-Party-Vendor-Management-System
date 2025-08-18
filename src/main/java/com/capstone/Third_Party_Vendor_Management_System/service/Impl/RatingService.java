@@ -14,6 +14,6 @@ public class RatingService {
     }
     // get rating by vendor id( to do)
 
-    // sorting by rating 
+    // sorting by rating
 
 }
