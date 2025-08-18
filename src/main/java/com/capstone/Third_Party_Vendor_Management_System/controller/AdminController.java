@@ -14,7 +14,6 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-
     @PostMapping
     public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin){
         return ResponseEntity.ok(adminService.saveAdmin(admin));
@@ -33,7 +32,6 @@ public class AdminController {
     }
 
     @PutMapping("/{id}")
-
     public ResponseEntity<Admin> updateAdmin(@PathVariable Long id,@RequestBody Admin admin){
         return ResponseEntity.ok(adminService.updateAdmin(id,admin));
 
