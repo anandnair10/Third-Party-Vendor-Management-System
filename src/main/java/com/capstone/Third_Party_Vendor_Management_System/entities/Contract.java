@@ -1,17 +1,34 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
+import lombok.*;
 
+import java.time.LocalDate;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "contracts")
 public class Contract {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String contractDetails;
-    private String startDate;
-    private String endDate;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
     private Double contractValue;
-    @OneToOne(mappedBy = "contract")
+
+    @OneToOne(mappedBy = "contract", fetch = FetchType.LAZY)
     private Vendor vendor;
+
+    @OneToOne(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ContractExpiryReminder contractExpiryReminder;
 }

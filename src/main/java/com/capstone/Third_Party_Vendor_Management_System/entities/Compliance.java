@@ -18,15 +18,16 @@ public class Compliance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "vendor_id", nullable = false)
-    private Long vendorId;
-
-    @Column(name ="document_name", nullable = false)
+    @Column(name = "document_name", nullable = false)
     private String documentName;
 
     @Column(name = "file_path", columnDefinition = "TEXT")
     private String filePath;
 
-    @Column(name =" uploaded_at", nullable = false)
-    private LocalDateTime uploadedAt =LocalDateTime.now();
+    @Column(name = "uploaded_at", nullable = false)
+    private LocalDateTime uploadedAt = LocalDateTime.now();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vendor_id", nullable = false)
+    private Vendor vendor;
 }

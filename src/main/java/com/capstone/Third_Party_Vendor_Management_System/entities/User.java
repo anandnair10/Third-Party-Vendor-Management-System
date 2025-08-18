@@ -7,10 +7,10 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@MappedSuperclass // This class is not an entity, but its fields are inherited
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
+@MappedSuperclass
 public abstract class User {
 
     @Id
@@ -30,5 +30,6 @@ public abstract class User {
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
     private Role role;
 }
