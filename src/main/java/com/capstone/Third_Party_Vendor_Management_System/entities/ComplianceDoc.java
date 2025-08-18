@@ -23,9 +23,6 @@ public class ComplianceDoc {
     @Column(name = "vendor_id", nullable = false)
     private Long vendorId;
 
-    @Column(name = "document_type", nullable = false)
-    private String documentType;
-
     @Column(name = "upload_date")
     private LocalDate uploadDate;
 
