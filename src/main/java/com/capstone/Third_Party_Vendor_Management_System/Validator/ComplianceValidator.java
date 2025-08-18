@@ -2,12 +2,13 @@ package com.capstone.Third_Party_Vendor_Management_System.Validator;
 
 import com.capstone.Third_Party_Vendor_Management_System.config.ComplianceDocumentsConfig;
 import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VendorType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Component
 public class ComplianceValidator {
     private static final List<String> ALLOWED_FORMATS = List.of("application/pdf","image/png","image/jpeg");
     private static final long MAX_FILE_SIZE = 5*1024*1024;

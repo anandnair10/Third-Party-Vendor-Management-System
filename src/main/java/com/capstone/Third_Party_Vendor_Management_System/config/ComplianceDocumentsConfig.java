@@ -1,9 +1,10 @@
 package com.capstone.Third_Party_Vendor_Management_System.config;
 
 import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VendorType;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.*;
-
+@Configuration
 public class ComplianceDocumentsConfig {
     private static final Map<VendorType, List<String>> requiredDocs =new HashMap<>();
     static{

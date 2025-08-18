@@ -1,24 +1,22 @@
 package com.capstone.Third_Party_Vendor_Management_System.service.Impl;
 
-import com.capstone.Third_Party_Vendor_Management_System.Util.FileStorageUtil;
-import com.capstone.Third_Party_Vendor_Management_System.Validator.ComplianceValidator;
-import com.capstone.Third_Party_Vendor_Management_System.config.ComplianceDocumentsConfig;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Compliance;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
 import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VendorType;
 import com.capstone.Third_Party_Vendor_Management_System.repository.ComplianceRespository;
 import com.capstone.Third_Party_Vendor_Management_System.repository.VendorRepository;
+import com.capstone.Third_Party_Vendor_Management_System.service.ComplianceService;
+import com.capstone.Third_Party_Vendor_Management_System.Util.FileStorageUtil;
+import com.capstone.Third_Party_Vendor_Management_System.Validator.ComplianceValidator;
+import com.capstone.Third_Party_Vendor_Management_System.config.ComplianceDocumentsConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
-public class ComplianceServiceImpl {
+public class ComplianceServiceImpl implements ComplianceService {
 
     private final FileStorageUtil fileStorageUtil;
     private final ComplianceValidator complianceValidator;
@@ -38,10 +36,39 @@ public class ComplianceServiceImpl {
         this.vendorRepository = vendorRepository;
     }
 
+    @Override
+    public Optional<Compliance> getDocumentById(Long id) {
+        return complianceRespository.findById(id);
+    }
+
+    @Override
+    public Compliance createDocument(Compliance doc) {
+        return complianceRespository.save(doc);
+    }
+
+    @Override
+    public Optional<Compliance> updateDocument(Long id, Compliance updatedDoc) {
+        return complianceRespository.findById(id).map(existing -> {
+            existing.setFilePath(updatedDoc.getFilePath());
+            existing.setUploadDate(updatedDoc.getUploadDate());
+            existing.setExpiryDate(updatedDoc.getExpiryDate());
+            existing.setVerificationStatus(updatedDoc.getVerificationStatus());
+            return complianceRespository.save(existing);
+        });
+    }
+
+    @Override
+    public boolean deleteDocument(Long id) {
+        if (complianceRespository.existsById(id)) {
+            complianceRespository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
     public Map<String, String> uploadComplianceDocuments(Long vendorId, VendorType vendorType,
                                                          Map<String, MultipartFile> files) throws IOException {
 
-        // Fetch vendor entity to set relation in Compliance entity
         Optional<Vendor> vendorOpt = vendorRepository.findById(vendorId);
         if (vendorOpt.isEmpty()) {
             throw new RuntimeException("Vendor with ID " + vendorId + " not found");
@@ -65,9 +92,9 @@ public class ComplianceServiceImpl {
             storedPaths.put(docName, path);
 
             Compliance complianceDoc = new Compliance();
-            complianceDoc.setDocumentName(docName);  // Corrected method name casing
+            complianceDoc.setDocumentName(docName);
             complianceDoc.setFilePath(path);
-            complianceDoc.setVendor(vendor); // Set vendor entity, not vendorId
+            complianceDoc.setVendor(vendor);
 
             complianceRespository.save(complianceDoc);
         }
