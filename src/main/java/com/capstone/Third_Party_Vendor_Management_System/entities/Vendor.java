@@ -1,8 +1,10 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
-import com.capstone.Third_Party_Vendor_Management_System.entities.enums.Role;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -53,4 +55,7 @@ public class Vendor extends User{
     @Column(name = "pricing", columnDefinition = "TEXT")
     private String pricing; // Can be structured later (JSON, table, etc.)
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contract_id", referencedColumnName = "id")
+    private Contract contract;
 }

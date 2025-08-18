@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
-
+@RestController
+@RequestMapping("/api/vendors")
 public class VendorController {
+
     @Autowired
     private VendorService vendorService;
 
