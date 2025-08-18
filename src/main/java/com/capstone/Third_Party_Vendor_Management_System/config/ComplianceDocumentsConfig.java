@@ -14,6 +14,10 @@ public class ComplianceDocumentsConfig {
         requiredDocs.put(VendorType.SUPPORT,
                 Arrays.asList("Labour License","GST Certificate","PAN card","Service Agreement"));
     }
+
+    ;
+
+
     public static List<String> getRequiredDocs(VendorType type){
         return requiredDocs.getOrDefault(type, Collections.emptyList());
     }

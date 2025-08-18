@@ -14,7 +14,6 @@ public class ComplianceController {
 
     @Autowired
     private ComplianceService complianceDocService;
-
     // Get document by ID
     @GetMapping("/{id}")
     public ResponseEntity<Compliance> getDocumentById(@PathVariable Long id) {
@@ -22,14 +21,12 @@ public class ComplianceController {
         return doc.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
     // Create a new document
     @PostMapping
     public ResponseEntity<Compliance> createDocument(@RequestBody Compliance doc) {
         Compliance created = complianceDocService.createDocument(doc);
         return ResponseEntity.ok(created);
     }
-
     // Update an existing document
     @PutMapping("/{id}")
     public ResponseEntity<Compliance> updateDocument(@PathVariable Long id, @RequestBody Compliance updatedDoc) {
