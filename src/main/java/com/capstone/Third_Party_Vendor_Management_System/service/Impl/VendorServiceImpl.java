@@ -55,8 +55,6 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public Vendor deleteVendor(Long VendorId) {
-
-
         return vendorRepository.findById(VendorId)
                 .map(vendor -> {
                     vendorRepository.delete(vendor);

@@ -22,7 +22,7 @@ public class VendorController {
     public ResponseEntity<List<Vendor>> getAllVendors(){
         return ResponseEntity.ok(vendorService.getAllVendors());
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getVendorById(@PathVariable Long id){
         return ResponseEntity.ok(vendorService.getVendorById(id));
@@ -33,12 +33,7 @@ public class VendorController {
         return ResponseEntity.ok(vendorService.updateVendor(id, vendor));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteVendor(@PathVariable Long id){
-        boolean deleted =vendorService.deleteVendor(id);
-        if(deleted){
-            return ResponseEntity.ok("Vendor deleted successfully");
-        }else{
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Vendor> deleteVendor(@PathVariable Long id){
+        return ResponseEntity.ok(vendorService.deleteVendor(id));
     }
 }
