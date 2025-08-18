@@ -15,7 +15,7 @@ public class ComplianceDocController {
 
     @Autowired
     private ComplianceDocService complianceDocService;
-    
+
     // Get document by ID
     @GetMapping("/{id}")
     public ResponseEntity<ComplianceDoc> getDocumentById(@PathVariable Long id) {
