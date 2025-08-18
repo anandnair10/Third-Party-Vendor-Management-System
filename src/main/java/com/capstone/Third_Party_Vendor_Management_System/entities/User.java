@@ -7,13 +7,10 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@MappedSuperclass // Not its own table, but inherited by Admin/Vendor/Employee
+@MappedSuperclass // This class is not an entity, but its fields are inherited
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @SuperBuilder
-@Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "users")
 public abstract class User {
 
     @Id
@@ -34,5 +31,4 @@ public abstract class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
 }
