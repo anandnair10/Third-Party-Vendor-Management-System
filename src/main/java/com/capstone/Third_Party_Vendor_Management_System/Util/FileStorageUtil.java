@@ -1,5 +1,6 @@
 package com.capstone.Third_Party_Vendor_Management_System.Util;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@Component
 public class FileStorageUtil {
     private static final String BASE_DIR = " ";
     public static String saveFile(MultipartFile file, String vendorId, String documentName) throws IOException {
