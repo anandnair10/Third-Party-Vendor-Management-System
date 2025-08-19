@@ -1,7 +1,7 @@
 package com.capstone.Third_Party_Vendor_Management_System.controller;
 
 import com.capstone.Third_Party_Vendor_Management_System.entities.Employee;
-import com.capstone.Third_Party_Vendor_Management_System.repository.EmployeeRepository;
+import com.capstone.Third_Party_Vendor_Management_System.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,57 +14,41 @@ import java.util.Optional;
 public class EmployeeController {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeService employeeService;
 
-    // Get all employees
+    // 🔹 Get all employees
     @GetMapping
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+        return employeeService.getAllEmployees();
     }
 
-    // Get employee by ID
+    // 🔹 Get employee by ID
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
-        Optional<Employee> employee = employeeRepository.findById(id);
+        Optional<Employee> employee = employeeService.getEmployeeById(id);
         return employee.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Create new employee
+    // 🔹 Create new employee
     @PostMapping
-    public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeRepository.save(employee);
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+        Employee savedEmployee = employeeService.createEmployee(employee);
+        return ResponseEntity.ok(savedEmployee);
     }
 
-    // Update employee
+    // 🔹 Update employee
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
-        return employeeRepository.findById(id).map(employee -> {
-            employee.setDepartment(updatedEmployee.getDepartment());
-            employee.setUsername(updatedEmployee.getUsername());
-            employee.setPassword(updatedEmployee.getPassword());
-            return ResponseEntity.ok(employeeRepository.save(employee));
-        }).orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<Employee> updated = employeeService.updateEmployee(id, updatedEmployee);
+        return updated.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Delete employee
+    // 🔹 Delete employee
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
-        if (employeeRepository.existsById(id)) {
-            employeeRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        boolean deleted = employeeService.deleteEmployee(id);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
-
-    // Login (basic example)
-//    @PostMapping("/login")
-//    public ResponseEntity<Employee> login(@RequestBody Employee loginRequest) {
-//        Optional<Employee> employee = employeeRepository.findByUsernameAndPassword(
-//                loginRequest.getUsername(), loginRequest.getPassword()
-//        );
-//        return employee.map(ResponseEntity::ok)
-//                .orElseGet(() -> ResponseEntity.status(401).build());
-//    }
 }
-
