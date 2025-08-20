@@ -1,13 +1,13 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -54,6 +54,10 @@ public class Vendor extends User {
     @Column(name = "pricing", columnDefinition = "TEXT")
     private String pricing;
 
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings;
+
+
 //    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Compliance> compliance;
 //
@@ -64,4 +68,6 @@ public class Vendor extends User {
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JoinColumn(name = "contract_id", referencedColumnName = "id", unique = true)
 //    private Contract contract;
+
+
 }

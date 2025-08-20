@@ -1,9 +1,12 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.lang.Contract;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,13 +21,8 @@ public class Rating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rating_id")
     private Long ratingId;
-    @Column(name = "vendorId", nullable = false)
-    private Long vendorId;
 
-    @Column(name = "employee_id", nullable = false)
-    private Long employeeId;
-
-    @Column(name = "rating_value", nullable = false)
+    @Column(name = "rating_value")
     private Integer ratingValue;
 
     @Column(name = "feedback", columnDefinition = "TEXT")
@@ -33,7 +31,13 @@ public class Rating {
     @Column(name = "rating_date")
     private LocalDate ratingDate;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "vendor_id", nullable = false)
-//    private Vendor vendor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vendor_id", nullable = false)
+    private Vendor vendor;
+
+
 }
