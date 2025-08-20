@@ -9,4 +9,14 @@ public class TopRatedVendorDTO {
     private Long vendorId;
     private String businessName;
     private Double averageRating;
+
+    // No-args constructor for serialization/deserialization
+    public TopRatedVendorDTO() {}
+
+    // Constructor used in service layer
+    public TopRatedVendorDTO(Long vendorId, String businessName, Double averageRating) {
+        this.vendorId = vendorId;
+        this.businessName = businessName;
+        this.averageRating = averageRating;
+    }
 }
