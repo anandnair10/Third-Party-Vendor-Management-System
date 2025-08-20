@@ -35,4 +35,7 @@ public interface RatingService {
      * @return the updated Rating
      */
     Rating updateRating(Long ratingId, Rating updatedRating);
-}
+
+    public Double getAverageRatingVendor(Long vendorId);
+
+    }

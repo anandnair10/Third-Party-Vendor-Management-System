@@ -62,6 +62,8 @@ public class RatingServiceImpl implements RatingService {
 
         return ratingRepository.save(existingRating);
     }
-
-
+//  http://localhost:8080/api/rating/vendor/8/average
+    public Double getAverageRatingVendor(Long vendorId){
+        return ratingRepository.findAverageRatingByVendorId(vendorId);
+    }
 }

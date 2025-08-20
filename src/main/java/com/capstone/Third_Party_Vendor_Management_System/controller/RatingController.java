@@ -7,6 +7,7 @@ import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
 import com.capstone.Third_Party_Vendor_Management_System.mapper.RatingMapper;
 import com.capstone.Third_Party_Vendor_Management_System.repository.EmployeeRepository;
 import com.capstone.Third_Party_Vendor_Management_System.repository.VendorRepository;
+import com.capstone.Third_Party_Vendor_Management_System.service.Impl.VendorServiceImpl;
 import com.capstone.Third_Party_Vendor_Management_System.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,6 +65,21 @@ public class RatingController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/vendor/{vendorId}/average")
+    public ResponseEntity<Double> getAverageRatingVendor(@PathVariable Long vendorId){
+        Double avgRating = ratingService.getAverageRatingVendor(vendorId);
+        if(avgRating == null){
+            return ResponseEntity.ok(0.0);
+        }
+        return ResponseEntity.ok(avgRating);
+    }
+
+    @GetMapping("/sorted")
+    public ResponseEntity<List<TopRatedVendorDTO>> getVendorsSortedByRating(
+            @RequestParam(defaultValue = "desc") String order) {
+        List<TopRatedVendorDTO> sortedVendors = VendorServiceImpl.getVendorsSortedByRating(order);
+        return ResponseEntity.ok(sortedVendors);
+    }
 
 
 }
