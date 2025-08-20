@@ -1,5 +1,6 @@
 package com.capstone.Third_Party_Vendor_Management_System.controller;
 
+import com.capstone.Third_Party_Vendor_Management_System.dto.TopRatedVendorDTO;
 import com.capstone.Third_Party_Vendor_Management_System.dto.VendorDTO;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
 import com.capstone.Third_Party_Vendor_Management_System.mapper.VendorMapper;
@@ -46,5 +47,11 @@ public class VendorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Vendor> deleteVendor(@PathVariable Long id){
         return ResponseEntity.ok(vendorService.deleteVendor(id));
+    }
+
+    @GetMapping("/sorted-by-rating")
+    public ResponseEntity<List<TopRatedVendorDTO>> getVendorsSortedByRatingDesc() {
+        List<TopRatedVendorDTO> sortedVendors = vendorService.getVendorsSortedByRatingDesc();
+        return ResponseEntity.ok(sortedVendors);
     }
 }
