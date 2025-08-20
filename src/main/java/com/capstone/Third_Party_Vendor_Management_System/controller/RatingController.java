@@ -1,6 +1,7 @@
 package com.capstone.Third_Party_Vendor_Management_System.controller;
 
 import com.capstone.Third_Party_Vendor_Management_System.dto.RatingDTO;
+import com.capstone.Third_Party_Vendor_Management_System.dto.TopRatedVendorDTO;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Employee;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Rating;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
@@ -73,13 +74,5 @@ public class RatingController {
         }
         return ResponseEntity.ok(avgRating);
     }
-
-    @GetMapping("/sorted")
-    public ResponseEntity<List<TopRatedVendorDTO>> getVendorsSortedByRating(
-            @RequestParam(defaultValue = "desc") String order) {
-        List<TopRatedVendorDTO> sortedVendors = VendorServiceImpl.getVendorsSortedByRating(order);
-        return ResponseEntity.ok(sortedVendors);
-    }
-
-
+    
 }
