@@ -10,6 +10,7 @@ public class EmployeeMapper {
                 .id(employee.getId())
                 .fullName(employee.getFullName())
                 .email(employee.getEmail())
+                .role(employee.getRole())
                 .department(employee.getDepartment())
                 .build();
     }
@@ -19,6 +20,7 @@ public class EmployeeMapper {
         employee.setId(dto.getId()); // optional for updates
         employee.setFullName(dto.getFullName());
         employee.setEmail(dto.getEmail());
+        employee.setRole(dto.getRole());
         employee.setDepartment(dto.getDepartment());
         return employee;
     }

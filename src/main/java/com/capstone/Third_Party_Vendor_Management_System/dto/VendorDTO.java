@@ -11,18 +11,9 @@ import lombok.*;
 public class VendorDTO {
     private Long id;
     private String fullName;
-    private String email;
-    private String phoneNumber;
     private Role role;
     private String businessName;
-    private String businessStructure;
     private Integer establishedYear;
-    private String primaryContactName;
-    private String primaryContactDesignation;
-    private String emailAddress;
-    private String website;
     private String companyAddress;
     private String vendorType;
-    private String description;
-    private String pricing;
 }

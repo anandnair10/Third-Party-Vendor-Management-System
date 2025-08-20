@@ -1,6 +1,10 @@
 package com.capstone.Third_Party_Vendor_Management_System.controller;
 
+import com.capstone.Third_Party_Vendor_Management_System.dto.AdminDTO;
+import com.capstone.Third_Party_Vendor_Management_System.dto.EmployeeDTO;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Employee;
+import com.capstone.Third_Party_Vendor_Management_System.mapper.AdminMapper;
+import com.capstone.Third_Party_Vendor_Management_System.mapper.EmployeeMapper;
 import com.capstone.Third_Party_Vendor_Management_System.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -18,16 +23,21 @@ public class EmployeeController {
 
     // 🔹 Get all employees
     @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+        List<EmployeeDTO> employees = employeeService.getAllEmployees()
+                .stream()
+                .map(EmployeeMapper::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(employees);
     }
 
     // 🔹 Get employee by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
-        Optional<Employee> employee = employeeService.getEmployeeById(id);
-        return employee.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
+        Optional<Employee> employeeOptional = employeeService.getEmployeeById(id);
+        return employeeOptional
+                .map(employee -> ResponseEntity.ok(EmployeeMapper.toDTO(employee)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // 🔹 Create new employee

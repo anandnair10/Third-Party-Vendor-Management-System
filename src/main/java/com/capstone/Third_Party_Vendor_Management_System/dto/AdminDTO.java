@@ -12,9 +12,6 @@ public class AdminDTO {
     private Long id;
     private String fullName;
     private String email;
-    private String phoneNumber;
     private Role role;
-    private String adminCode;
     private String department;
-    private String passwordHash;
 }
