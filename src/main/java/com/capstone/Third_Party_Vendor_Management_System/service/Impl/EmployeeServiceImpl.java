@@ -35,7 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findById(id).map(employee -> {
             employee.setDepartment(updatedEmployee.getDepartment());
             employee.setUsername(updatedEmployee.getUsername());
-            employee.setPassword(updatedEmployee.getPassword());
+            employee.setPasswordHash(updatedEmployee.getPasswordHash());
             return employeeRepository.save(employee);
         });
     }
