@@ -74,12 +74,5 @@ public class RatingController {
         return ResponseEntity.ok(avgRating);
     }
 
-    @GetMapping("/sorted")
-    public ResponseEntity<List<TopRatedVendorDTO>> getVendorsSortedByRating(
-            @RequestParam(defaultValue = "desc") String order) {
-        List<TopRatedVendorDTO> sortedVendors = VendorServiceImpl.getVendorsSortedByRating(order);
-        return ResponseEntity.ok(sortedVendors);
-    }
-
 
 }
