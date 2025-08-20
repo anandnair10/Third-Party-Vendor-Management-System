@@ -3,6 +3,7 @@ package com.capstone.Third_Party_Vendor_Management_System.service.Impl;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Compliance;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
 import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VendorType;
+import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VerificationStatus;
 import com.capstone.Third_Party_Vendor_Management_System.repository.ComplianceRespository;
 import com.capstone.Third_Party_Vendor_Management_System.repository.VendorRepository;
 import com.capstone.Third_Party_Vendor_Management_System.service.ComplianceService;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -36,38 +39,8 @@ public class ComplianceServiceImpl implements ComplianceService {
         this.vendorRepository = vendorRepository;
     }
 
-    @Override
-    public Optional<Compliance> getDocumentById(Long id) {
-        return complianceRespository.findById(id);
-    }
-
-    @Override
-    public Compliance createDocument(Compliance doc) {
-        return complianceRespository.save(doc);
-    }
-
-    @Override
-    public Optional<Compliance> updateDocument(Long id, Compliance updatedDoc) {
-        return complianceRespository.findById(id).map(existing -> {
-            existing.setFilePath(updatedDoc.getFilePath());
-            existing.setUploadDate(updatedDoc.getUploadDate());
-            existing.setExpiryDate(updatedDoc.getExpiryDate());
-            existing.setVerificationStatus(updatedDoc.getVerificationStatus());
-            return complianceRespository.save(existing);
-        });
-    }
-
-    @Override
-    public boolean deleteDocument(Long id) {
-        if (complianceRespository.existsById(id)) {
-            complianceRespository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
-    public Map<String, String> uploadComplianceDocuments(Long vendorId, VendorType vendorType,
-                                                         Map<String, MultipartFile> files) throws IOException {
+    public List<String> uploadComplianceDocuments(Long vendorId, VendorType vendorType,
+                                                  Map<String, MultipartFile> files) throws IOException {
 
         Optional<Vendor> vendorOpt = vendorRepository.findById(vendorId);
         if (vendorOpt.isEmpty()) {
@@ -75,7 +48,7 @@ public class ComplianceServiceImpl implements ComplianceService {
         }
         Vendor vendor = vendorOpt.get();
 
-        Map<String, String> storedPaths = new HashMap<>();
+        List<String> storedPaths = new ArrayList<>();
         List<String> requiredDocs = complianceDocumentsConfig.getRequiredDocs(vendorType);
         for (String doc : requiredDocs) {
             if (!files.containsKey(doc)) {
@@ -89,16 +62,36 @@ public class ComplianceServiceImpl implements ComplianceService {
 
             complianceValidator.validateFile(file, docName);
             String path = fileStorageUtil.saveFile(file, vendorId.toString(), docName);
-            storedPaths.put(docName, path);
+            storedPaths.add(file.getOriginalFilename());
 
             Compliance complianceDoc = new Compliance();
+            complianceDoc.setVendorId(vendorId);
             complianceDoc.setDocumentName(docName);
             complianceDoc.setFilePath(path);
-            complianceDoc.setVendor(vendor);
+            complianceDoc.setUploadDate(LocalDate.now());
+            complianceDoc.setUploadedAt(LocalDateTime.now());
+            complianceDoc.setVerificationStatus(VerificationStatus.PENDING);
 
             complianceRespository.save(complianceDoc);
         }
 
         return storedPaths;
     }
+
+    @Override
+    public List<Compliance> getDocumentByVendorId(Long VendorId) {
+        return complianceRespository.findByVendorId(VendorId);
+    }
+
+
+    @Override
+    public boolean deleteDocument(Long id) {
+        if (complianceRespository.existsById(id)) {
+            complianceRespository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
 }
