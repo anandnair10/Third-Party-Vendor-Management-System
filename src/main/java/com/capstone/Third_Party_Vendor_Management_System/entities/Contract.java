@@ -1,5 +1,6 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long vendorId;
 
     private String contractDetails;
@@ -27,9 +29,7 @@ public class Contract {
 
     private Double contractValue;
 
-//    @OneToOne(mappedBy = "contract", fetch = FetchType.LAZY)
-//    private Vendor vendor;
-
     @OneToOne(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private ContractExpiryReminder contractExpiryReminder;
 }

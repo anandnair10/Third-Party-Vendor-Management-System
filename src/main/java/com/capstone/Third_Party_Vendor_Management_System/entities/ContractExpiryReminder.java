@@ -1,5 +1,6 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,10 @@ public class ContractExpiryReminder {
 
     private LocalDate reminderDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contract_id", unique = true, nullable = false)
+    private boolean reminderSent;
+
+    @OneToOne
+    @JoinColumn(name = "contract_id")
+    @JsonBackReference
     private Contract contract;
 }
