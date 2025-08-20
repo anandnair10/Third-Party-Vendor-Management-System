@@ -19,8 +19,10 @@ public class Compliance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "vendorId")
+    private Long vendorId;
 
-    @Column(name = "document_name", nullable = false)
+    @Column(name = "document_name")
     private String documentName;
 
     @Column(name = "file_path", columnDefinition = "TEXT")
@@ -39,7 +41,7 @@ public class Compliance {
     @Column(name = "verification_status")
     private VerificationStatus verificationStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vendor_id", nullable = false)
-    private Vendor vendor;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "vendor_id", nullable = false)
+//    private Vendor vendor;
 }

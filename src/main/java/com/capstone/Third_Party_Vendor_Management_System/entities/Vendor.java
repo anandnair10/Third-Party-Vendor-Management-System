@@ -1,10 +1,13 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -30,8 +33,8 @@ public class Vendor extends User {
     @Column(name = "primary_contact_designation")
     private String primaryContactDesignation;
 
-    @Column(name = "phone_number", nullable = false)
-    private String phoneNumber;
+    @Column(name = "primary_phone_number", nullable = false)
+    private String primaryphoneNumber;
 
     @Column(name = "email_address", nullable = false, unique = true)
     private String emailAddress;
@@ -51,14 +54,14 @@ public class Vendor extends User {
     @Column(name = "pricing", columnDefinition = "TEXT")
     private String pricing;
 
-    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Compliance> compliance;
-
-    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Rating> performanceRatings;
-
-    // One vendor has ONE contract (OneToOne)
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "contract_id", referencedColumnName = "id", unique = true)
-    private Contract contract;
+//    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Compliance> compliance;
+//
+//    @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Rating> performanceRatings;
+//
+//    // One vendor has ONE contract (OneToOne)
+//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "contract_id", referencedColumnName = "id", unique = true)
+//    private Contract contract;
 }

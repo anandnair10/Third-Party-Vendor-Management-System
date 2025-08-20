@@ -1,38 +1,41 @@
 package com.capstone.Third_Party_Vendor_Management_System.controller;
 
 import com.capstone.Third_Party_Vendor_Management_System.entities.Compliance;
+import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VendorType;
 import com.capstone.Third_Party_Vendor_Management_System.service.ComplianceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/compliance-docs")
+//@RequestMapping("/api/compliance-docs")
 public class ComplianceController {
 
     @Autowired
     private ComplianceService complianceDocService;
-    // Get document by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Compliance> getDocumentById(@PathVariable Long id) {
-        Optional<Compliance> doc = complianceDocService.getDocumentById(id);
-        return doc.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+
+    public ComplianceController(ComplianceService complianceDocService) {
+        this.complianceDocService = complianceDocService;
     }
+
     // Create a new document
-    @PostMapping
-    public ResponseEntity<Compliance> createDocument(@RequestBody Compliance doc) {
-        Compliance created = complianceDocService.createDocument(doc);
-        return ResponseEntity.ok(created);
+    @PostMapping("/upload/{vendorId}")
+    public ResponseEntity<List<String>> uploadComplianceDocs(
+            @PathVariable Long vendorId,
+            @RequestParam VendorType vendorType,
+            @RequestParam Map<String, MultipartFile> files) throws IOException {
+        List<String> storedDocs =  complianceDocService.uploadComplianceDocuments(vendorId, vendorType, files);
+        return ResponseEntity.ok(storedDocs);
     }
-    // Update an existing document
-    @PutMapping("/{id}")
-    public ResponseEntity<Compliance> updateDocument(@PathVariable Long id, @RequestBody Compliance updatedDoc) {
-        Optional<Compliance> updated = complianceDocService.updateDocument(id, updatedDoc);
-        return updated.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+
+    @GetMapping("/vendor/{vendorId}")
+    public ResponseEntity<List<Compliance>> getVendorDocs(@PathVariable Long vendorId){
+        return ResponseEntity.ok(complianceDocService.getDocumentByVendorId(vendorId));
     }
 
     // Delete a document

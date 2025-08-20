@@ -18,6 +18,8 @@ public class Rating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rating_id")
     private Long ratingId;
+    @Column(name = "vendorId", nullable = false)
+    private Long vendorId;
 
     @Column(name = "employee_id", nullable = false)
     private Long employeeId;
@@ -31,7 +33,7 @@ public class Rating {
     @Column(name = "rating_date")
     private LocalDate ratingDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vendor_id", nullable = false)
-    private Vendor vendor;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "vendor_id", nullable = false)
+//    private Vendor vendor;
 }

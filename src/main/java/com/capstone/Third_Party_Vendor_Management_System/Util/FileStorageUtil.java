@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 
 @Component
 public class FileStorageUtil {
-    private static final String BASE_DIR = " ";
+    private static final String BASE_DIR = "C:\\Users\\sujitha.c\\IdeaProjects\\Third-Party-Vendor-Management-System\\storing_data";
     public static String saveFile(MultipartFile file, String vendorId, String documentName) throws IOException {
         String dirPath =BASE_DIR + vendorId + "/";
         Files.createDirectories(Paths.get(dirPath));
