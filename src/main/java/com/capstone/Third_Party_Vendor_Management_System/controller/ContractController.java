@@ -21,7 +21,6 @@ public class ContractController {
     @PostMapping
     public ResponseEntity<Contract> createContract(@RequestBody Contract contract) {
         Contract savedContract = contractService.createContract(contract);
-
         return ResponseEntity.ok(savedContract);
     }
 
