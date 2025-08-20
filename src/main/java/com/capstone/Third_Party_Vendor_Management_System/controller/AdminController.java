@@ -18,11 +18,11 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping
-    public ResponseEntity<AdminDTO> createAdmin(@RequestBody AdminDTO adminDTO) {
-        Admin admin = AdminMapper.toEntity(adminDTO);
+    public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin) {
         Admin savedAdmin = adminService.saveAdmin(admin);
-        return ResponseEntity.ok(AdminMapper.toDTO(savedAdmin));
+        return ResponseEntity.ok(savedAdmin);
     }
+
 
     @GetMapping
     public ResponseEntity<List<AdminDTO>> getAllAdmins() {
@@ -34,10 +34,15 @@ public class AdminController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AdminDTO> updateAdmin(@PathVariable Long id, @RequestBody AdminDTO adminDTO) {
-        Admin updatedAdmin = adminService.updateAdmin(id, AdminMapper.toEntity(adminDTO));
-        return ResponseEntity.ok(AdminMapper.toDTO(updatedAdmin));
+    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id, @RequestBody Admin updatedAdmin) {
+        Admin updated = adminService.updateAdmin(id, updatedAdmin);
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<AdminDTO> getAdminById(@PathVariable Long id) {

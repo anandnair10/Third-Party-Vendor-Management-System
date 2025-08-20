@@ -1,6 +1,8 @@
 package com.capstone.Third_Party_Vendor_Management_System.controller;
 
+import com.capstone.Third_Party_Vendor_Management_System.dto.VendorDTO;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
+import com.capstone.Third_Party_Vendor_Management_System.mapper.VendorMapper;
 import com.capstone.Third_Party_Vendor_Management_System.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/vendors")
 public class VendorController {
@@ -20,9 +24,14 @@ public class VendorController {
         Vendor savedVendor =vendorService.registerVendor(vendor);
         return ResponseEntity.ok(savedVendor);
     }
+
     @GetMapping
-    public ResponseEntity<List<Vendor>> getAllVendors(){
-        return ResponseEntity.ok(vendorService.getAllVendors());
+    public ResponseEntity<List<VendorDTO>> getAllVendors() {
+        List<VendorDTO> vendors = vendorService.getAllVendors()
+                .stream()
+                .map(VendorMapper::toDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(vendors);
     }
 
     @GetMapping("/{id}")

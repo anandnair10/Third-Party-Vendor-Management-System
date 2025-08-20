@@ -10,10 +10,7 @@ public class AdminMapper {
                 .id(admin.getId())
                 .fullName(admin.getFullName())
                 .email(admin.getEmail())
-                .phoneNumber(admin.getPhoneNumber())
                 .role(admin.getRole())
-                .passwordHash(admin.getPasswordHash())
-                .adminCode(admin.getAdminCode())
                 .department(admin.getDepartment())
                 .build();
     }
@@ -23,10 +20,7 @@ public class AdminMapper {
         admin.setId(dto.getId());
         admin.setFullName(dto.getFullName());
         admin.setEmail(dto.getEmail());
-        admin.setPhoneNumber(dto.getPhoneNumber());
         admin.setRole(dto.getRole());
-        admin.setAdminCode(dto.getAdminCode());
-        admin.setPasswordHash(dto.getPasswordHash());   
         admin.setDepartment(dto.getDepartment());
         return admin;
     }
