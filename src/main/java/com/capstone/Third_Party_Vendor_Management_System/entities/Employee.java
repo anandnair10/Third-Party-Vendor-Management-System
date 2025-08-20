@@ -1,7 +1,11 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,4 +23,6 @@ public class Employee extends User {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+
 }
