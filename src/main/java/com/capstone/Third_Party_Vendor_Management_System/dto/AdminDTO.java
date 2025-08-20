@@ -16,4 +16,5 @@ public class AdminDTO {
     private Role role;
     private String adminCode;
     private String department;
+    private String passwordHash;
 }
