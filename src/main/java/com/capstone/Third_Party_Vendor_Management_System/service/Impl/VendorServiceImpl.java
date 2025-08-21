@@ -24,7 +24,7 @@ public class VendorServiceImpl implements VendorService {
     @Autowired
 
     private PasswordEncoder passwordEncoder;
-  
+
     private RatingRepository ratingRepository;
 
     @Override
