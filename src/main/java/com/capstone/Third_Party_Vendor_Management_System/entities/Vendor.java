@@ -1,5 +1,6 @@
 package com.capstone.Third_Party_Vendor_Management_System.entities;
 
+import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VendorType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -46,8 +47,8 @@ public class Vendor extends User {
     @Column(name = "company_address", columnDefinition = "TEXT")
     private String companyAddress;
 
-    @Column(name = "vendor_type") // e.g. Catering, Photography, IT Services
-    private String vendorType;
+    @Enumerated(EnumType.STRING)
+    private VendorType vendorType;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;

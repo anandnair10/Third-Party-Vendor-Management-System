@@ -2,8 +2,10 @@ package com.capstone.Third_Party_Vendor_Management_System.controller;
 
 import com.capstone.Third_Party_Vendor_Management_System.entities.Compliance;
 import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VendorType;
+import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VerificationStatus;
 import com.capstone.Third_Party_Vendor_Management_System.service.ComplianceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-//@RequestMapping("/api/compliance-docs")
+@RequestMapping("/api/compliance-docs")
 public class ComplianceController {
 
     @Autowired
@@ -44,5 +46,25 @@ public class ComplianceController {
         boolean deleted = complianceDocService.deleteDocument(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+    
+    //http://localhost:8080/api/compliance-docs/update-status/vendor/8?status=APPROVED
+    @PatchMapping("/update-status/vendor/{vendorId}")
+    public ResponseEntity<String> updateDocumentsByVendor(
+            @PathVariable Long vendorId,
+            @RequestParam String status) {
+
+        try {
+            VerificationStatus verificationStatus = VerificationStatus.valueOf(status.toUpperCase());
+            boolean updated = complianceDocService.updateDocumentsByVendorId(vendorId, verificationStatus);
+            if (updated) {
+                return ResponseEntity.ok("All documents for vendor " + vendorId + " updated to " + verificationStatus);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No documents found for vendor " + vendorId);
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid status value: " + status);
+        }
+    }
+
 }
 

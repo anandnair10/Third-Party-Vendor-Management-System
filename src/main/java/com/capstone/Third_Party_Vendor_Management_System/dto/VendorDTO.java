@@ -1,6 +1,7 @@
 package com.capstone.Third_Party_Vendor_Management_System.dto;
 
 import com.capstone.Third_Party_Vendor_Management_System.entities.enums.Role;
+import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VendorType;
 import lombok.*;
 
 @Getter
@@ -15,5 +16,5 @@ public class VendorDTO {
     private String businessName;
     private Integer establishedYear;
     private String companyAddress;
-    private String vendorType;
+    private VendorType vendorType;
 }
