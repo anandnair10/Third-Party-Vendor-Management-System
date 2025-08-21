@@ -1,11 +1,16 @@
 package com.capstone.Third_Party_Vendor_Management_System.controller;
 
+import com.capstone.Third_Party_Vendor_Management_System.dto.EmployeeDTO;
 import com.capstone.Third_Party_Vendor_Management_System.dto.TopRatedVendorDTO;
 import com.capstone.Third_Party_Vendor_Management_System.dto.VendorDTO;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
+import com.capstone.Third_Party_Vendor_Management_System.mapper.EmployeeMapper;
 import com.capstone.Third_Party_Vendor_Management_System.mapper.VendorMapper;
 import com.capstone.Third_Party_Vendor_Management_System.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +30,15 @@ public class VendorController {
         return ResponseEntity.ok(savedVendor);
     }
 
-    @GetMapping("/getAllVendor")
-    public ResponseEntity<List<VendorDTO>> getAllVendors() {
-        List<VendorDTO> vendors = vendorService.getAllVendors()
-                .stream()
-                .map(VendorMapper::toDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(vendors);
+    @GetMapping("/VendorList")
+    public ResponseEntity<Page<VendorDTO>> getAllVendors(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<VendorDTO> vendorPage = vendorService.getAllVendors(pageable)
+                .map(VendorMapper::toDTO);
+        return ResponseEntity.ok(vendorPage);
     }
 
     @GetMapping("/getVendor/{id}")

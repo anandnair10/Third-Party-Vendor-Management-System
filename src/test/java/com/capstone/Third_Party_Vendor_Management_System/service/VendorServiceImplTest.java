@@ -1,5 +1,6 @@
 package com.capstone.Third_Party_Vendor_Management_System.service;
 
+import com.capstone.Third_Party_Vendor_Management_System.entities.Employee;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
 import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VendorType;
 import com.capstone.Third_Party_Vendor_Management_System.repository.VendorRepository;
@@ -8,6 +9,10 @@ import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.*;
 
@@ -58,12 +63,18 @@ class VendorServiceImplTest {
 
     @Test
     void testGetAllVendors() {
-        List<Vendor> vendors = List.of(vendor);
-        when(vendorRepository.findAll()).thenReturn(vendors);
-        List<Vendor> result = vendorService.getAllVendors();
-        assertEquals(1, result.size());
-        assertEquals(vendor, result.get(0));
+        Pageable pageable = PageRequest.of(0, 5);
+        List<Vendor> vendorsList = List.of(vendor);
+        Page<Vendor> page = new PageImpl<>(vendorsList, pageable, vendorsList.size());
+
+        when(vendorRepository.findAll(pageable)).thenReturn(page);
+
+        Page<Vendor> result = vendorService.getAllVendors(pageable);
+
+        assertEquals(1, result.getTotalElements());
+        assertEquals(vendor, result.getContent().get(0));
     }
+
 
     @Test
     void testUpdateVendor_Success() {
