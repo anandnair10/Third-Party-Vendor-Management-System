@@ -7,7 +7,6 @@ import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
 import com.capstone.Third_Party_Vendor_Management_System.mapper.RatingMapper;
 import com.capstone.Third_Party_Vendor_Management_System.repository.EmployeeRepository;
 import com.capstone.Third_Party_Vendor_Management_System.repository.VendorRepository;
-import com.capstone.Third_Party_Vendor_Management_System.service.Impl.VendorServiceImpl;
 import com.capstone.Third_Party_Vendor_Management_System.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/rating")
@@ -30,7 +28,7 @@ public class RatingController {
     @Autowired
     private VendorRepository vendorRepository;
 
-    @PostMapping
+    @PostMapping("/Rating")
     public ResponseEntity<Rating> createRating(@RequestBody RatingDTO dto) {
         Employee employee = employeeRepository.findById(dto.getEmployeeId())
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
@@ -44,7 +42,7 @@ public class RatingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedRating);
     }
 
-    @PutMapping("/{ratingId}")
+    @PutMapping("/updateRating/{ratingId}")
     public ResponseEntity<Rating> updateRating(@PathVariable Long ratingId,
                                                @RequestBody RatingDTO dto) {
         Employee employee = employeeRepository.findById(dto.getEmployeeId())
@@ -59,13 +57,13 @@ public class RatingController {
         return ResponseEntity.ok(savedRating);
     }
 
-    @GetMapping("/vendor/{vendorId}")
+    @GetMapping("/vendorRating/{vendorId}")
     public ResponseEntity<List<RatingDTO>> getRatingsByVendor(@PathVariable Long vendorId) {
         List<RatingDTO> response = ratingService.getRatingsForVendor(vendorId);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/vendor/{vendorId}/average")
+    @GetMapping("/Average/{vendorId}")
     public ResponseEntity<Double> getAverageRatingVendor(@PathVariable Long vendorId){
         Double avgRating = ratingService.getAverageRatingVendor(vendorId);
         if(avgRating == null){

@@ -35,13 +35,13 @@ public class ComplianceController {
         return ResponseEntity.ok(storedDocs);
     }
 
-    @GetMapping("/vendor/{vendorId}")
+    @GetMapping("/getDocs/{vendorId}")
     public ResponseEntity<List<Compliance>> getVendorDocs(@PathVariable Long vendorId){
         return ResponseEntity.ok(complianceDocService.getDocumentByVendorId(vendorId));
     }
 
     // Delete a document
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteDoc/{id}")
     public ResponseEntity<Void> deleteDocument(@PathVariable Long id) {
         boolean deleted = complianceDocService.deleteDocument(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();

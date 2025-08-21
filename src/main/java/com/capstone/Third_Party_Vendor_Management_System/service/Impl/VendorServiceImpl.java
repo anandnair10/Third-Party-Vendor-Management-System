@@ -7,6 +7,8 @@ import com.capstone.Third_Party_Vendor_Management_System.repository.RatingReposi
 import com.capstone.Third_Party_Vendor_Management_System.repository.VendorRepository;
 import com.capstone.Third_Party_Vendor_Management_System.service.VendorService;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,37 +20,51 @@ import java.util.stream.Collectors;
 @Service
 public class VendorServiceImpl implements VendorService {
 
+    private static final Logger logger = LoggerFactory.getLogger(VendorServiceImpl.class);
+
     @Autowired
     private VendorRepository vendorRepository;
 
     @Autowired
-
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
     private RatingRepository ratingRepository;
 
     @Override
     public Vendor registerVendor(Vendor vendor) {
+        logger.info("Registering new vendor: {}", vendor.getBusinessName());
         String hashedPassword = passwordEncoder.encode(vendor.getPasswordHash());
         vendor.setPasswordHash(hashedPassword);
-        return vendorRepository.save(vendor);
+        Vendor savedVendor = vendorRepository.save(vendor);
+        logger.info("Vendor registered with ID: {}", savedVendor.getId());
+        return savedVendor;
     }
 
     @Override
     public Vendor getVendorById(Long vendorId) {
+        logger.info("Fetching vendor with ID: {}", vendorId);
         return vendorRepository.findById(vendorId)
-                .orElseThrow(() -> new RuntimeException("Vendor not found with id " + vendorId));
+                .orElseThrow(() -> {
+                    logger.error("Vendor not found with ID: {}", vendorId);
+                    return new RuntimeException("Vendor not found with id " + vendorId);
+                });
     }
 
     @Override
     public List<Vendor> getAllVendors() {
+        logger.info("Fetching all vendors");
         return vendorRepository.findAll();
     }
 
     @Override
     public Vendor updateVendor(Long vendorId, Vendor vendor) {
+        logger.info("Updating vendor with ID: {}", vendorId);
         Vendor existingVendor = vendorRepository.findById(vendorId)
-                .orElseThrow(() -> new EntityNotFoundException("Vendor not found with id " + vendorId));
+                .orElseThrow(() -> {
+                    logger.error("Vendor not found with ID: {}", vendorId);
+                    return new EntityNotFoundException("Vendor not found with id " + vendorId);
+                });
 
         existingVendor.setFullName(vendor.getFullName());
         existingVendor.setBusinessName(vendor.getBusinessName());
@@ -64,24 +80,32 @@ public class VendorServiceImpl implements VendorService {
         existingVendor.setDescription(vendor.getDescription());
         existingVendor.setPricing(vendor.getPricing());
 
-        return vendorRepository.save(existingVendor);
+        Vendor updatedVendor = vendorRepository.save(existingVendor);
+        logger.info("Vendor updated with ID: {}", updatedVendor.getId());
+        return updatedVendor;
     }
 
     @Override
     public Vendor deleteVendor(Long vendorId) {
+        logger.info("Deleting vendor with ID: {}", vendorId);
         return vendorRepository.findById(vendorId)
                 .map(vendor -> {
                     vendorRepository.delete(vendor);
+                    logger.info("Vendor deleted with ID: {}", vendorId);
                     return vendor;
                 })
-                .orElseThrow(() -> new EntityNotFoundException("Vendor not found with ID: " + vendorId));
+                .orElseThrow(() -> {
+                    logger.error("Vendor not found with ID: {}", vendorId);
+                    return new EntityNotFoundException("Vendor not found with ID: " + vendorId);
+                });
     }
 
     @Override
     public List<TopRatedVendorDTO> getVendorsSortedByRatingDesc() {
+        logger.info("Fetching vendors sorted by average rating");
         List<Vendor> vendors = vendorRepository.findAll();
 
-        return vendors.stream()
+        List<TopRatedVendorDTO> sortedVendors = vendors.stream()
                 .map(vendor -> {
                     List<Rating> ratings = vendor.getRatings();
                     double avgRating = ratings.isEmpty() ? 0.0 :
@@ -90,12 +114,18 @@ public class VendorServiceImpl implements VendorService {
                 })
                 .sorted(Comparator.comparingDouble(TopRatedVendorDTO::getAverageRating).reversed())
                 .collect(Collectors.toList());
+
+        logger.debug("Sorted {} vendors by rating", sortedVendors.size());
+        return sortedVendors;
     }
 
     @Override
     public Double getAverageRatingVendor(Long vendorId) {
+        logger.info("Calculating average rating for vendor ID: {}", vendorId);
         List<Rating> ratings = ratingRepository.findByVendorId(vendorId);
-        return ratings.isEmpty() ? null :
+        Double average = ratings.isEmpty() ? null :
                 ratings.stream().mapToInt(Rating::getRatingValue).average().orElse(0.0);
+        logger.debug("Average rating for vendor ID {}: {}", vendorId, average);
+        return average;
     }
 }

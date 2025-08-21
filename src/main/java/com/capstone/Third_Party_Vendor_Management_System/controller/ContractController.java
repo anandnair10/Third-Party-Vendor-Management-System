@@ -15,38 +15,36 @@ public class ContractController {
 
     private final ContractService contractService;
 
-
-
     // Create a new contract
-    @PostMapping
+    @PostMapping("/createContract")
     public ResponseEntity<Contract> createContract(@RequestBody Contract contract) {
         Contract savedContract = contractService.createContract(contract);
         return ResponseEntity.ok(savedContract);
     }
 
     // Get all contracts
-    @GetMapping
+    @GetMapping("/getAllContracts")
     public ResponseEntity<List<Contract>> getAllContracts() {
         List<Contract> contracts = contractService.getAllContracts();
         return ResponseEntity.ok(contracts);
     }
 
     // Get contract by ID
-    @GetMapping("/{id}")
+    @GetMapping("/getContract/{id}")
     public ResponseEntity<Contract> getContractById(@PathVariable Long id) {
         Contract contract = contractService.getContractById(id);
         return ResponseEntity.ok(contract);
     }
 
     // Update contract
-    @PutMapping("/{id}")
+    @PutMapping("/updateContract/{id}")
     public ResponseEntity<Contract> updateContract(@PathVariable Long id, @RequestBody Contract updatedContract) {
         Contract contract = contractService.updateContract(id, updatedContract);
         return ResponseEntity.ok(contract);
     }
 
     // Delete contract
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deleteContract/{id}")
     public ResponseEntity<Void> deleteContract(@PathVariable Long id) {
         contractService.deleteContract(id);
         return ResponseEntity.noContent().build();
