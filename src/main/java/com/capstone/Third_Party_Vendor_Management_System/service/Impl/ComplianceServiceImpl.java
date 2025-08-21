@@ -91,6 +91,21 @@ public class ComplianceServiceImpl implements ComplianceService {
         return storedPaths;
     }
 
+    public boolean updateDocumentsByVendorId(Long vendorId, VerificationStatus status) {
+        List<Compliance> docs = complianceRespository.findByVendorId(vendorId);
+        if (docs.isEmpty()) {
+            return false;
+        }
+
+        for (Compliance doc : docs) {
+            doc.setVerificationStatus(status);
+        }
+
+        complianceRespository.saveAll(docs);
+        return true;
+    }
+
+
     @Override
     public List<Compliance> getDocumentByVendorId(Long vendorId) {
         logger.info("Fetching documents for vendor ID: {}", vendorId);
@@ -108,4 +123,10 @@ public class ComplianceServiceImpl implements ComplianceService {
         logger.warn("Document with ID {} not found", id);
         return false;
     }
+
+//    @Override
+//    public boolean updateDocumentsByVendorId(Long vendorId, String status) {
+//
+//    }
+
 }

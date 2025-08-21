@@ -2,6 +2,7 @@ package com.capstone.Third_Party_Vendor_Management_System.service;
 
 import com.capstone.Third_Party_Vendor_Management_System.entities.Compliance;
 import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VendorType;
+import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VerificationStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -16,4 +17,8 @@ public interface ComplianceService {
     boolean deleteDocument(Long id);
 
     List<String> uploadComplianceDocuments(Long vendorId, VendorType vendorType, Map<String, MultipartFile> files) throws IOException;
+
+    boolean updateDocumentsByVendorId(Long vendorId, VerificationStatus status);
+
+    //boolean updateDocumentsByVendorId(Long vendorId, String status);
 }
