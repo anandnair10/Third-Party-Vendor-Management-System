@@ -4,6 +4,7 @@ import com.capstone.Third_Party_Vendor_Management_System.entities.User;
 import com.capstone.Third_Party_Vendor_Management_System.repository.UserRepository;
 import com.capstone.Third_Party_Vendor_Management_System.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +16,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public User saveUser(User user) {
+        String hashedPassword = passwordEncoder.encode(user.getPasswordHash());
+        user.setPasswordHash(hashedPassword);
         return userRepository.save(user);
     }
 
@@ -36,6 +42,8 @@ public class UserServiceImpl implements UserService {
             user.setFullName(updatedUser.getFullName());
             user.setEmail(updatedUser.getEmail());
             user.setPhoneNumber(updatedUser.getPhoneNumber());
+            String hashedPassword = passwordEncoder.encode(updatedUser.getPasswordHash());
+            user.setPasswordHash(hashedPassword);
             user.setPasswordHash(updatedUser.getPasswordHash());
             user.setRole(updatedUser.getRole());
             return userRepository.save(user);
