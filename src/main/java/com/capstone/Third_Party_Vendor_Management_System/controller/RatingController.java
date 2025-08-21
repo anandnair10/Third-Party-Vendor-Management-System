@@ -74,5 +74,4 @@ public class RatingController {
         return ResponseEntity.ok(avgRating);
     }
 
-
 }
