@@ -1,6 +1,7 @@
 package com.capstone.Third_Party_Vendor_Management_System.service;
 
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
+import com.capstone.Third_Party_Vendor_Management_System.entities.enums.VendorType;
 import com.capstone.Third_Party_Vendor_Management_System.repository.VendorRepository;
 import com.capstone.Third_Party_Vendor_Management_System.service.Impl.VendorServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +30,7 @@ class VendorServiceImplTest {
         vendor.setEmailAddress("vendor@example.com");
         vendor.setWebsite("www.vendor.com");
         vendor.setCompanyAddress("123 Street, City");
-        vendor.setVendorType("IT Services");
+        vendor.setVendorType(VendorType.CATERING);
         vendor.setDescription("Provides IT solutions");
         vendor.setPricing("Competitive");
     }
@@ -77,7 +78,7 @@ class VendorServiceImplTest {
         updatedVendor.setEmailAddress("updated@example.com");
         updatedVendor.setWebsite("www.updated.com");
         updatedVendor.setCompanyAddress("456 Avenue, City");
-        updatedVendor.setVendorType("Consulting");
+        updatedVendor.setVendorType(VendorType.CATERING);
         updatedVendor.setDescription("Updated description");
         updatedVendor.setPricing("Premium");
 

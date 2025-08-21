@@ -53,7 +53,8 @@ class ComplianceServiceImplTest {
         MockitoAnnotations.openMocks(this);
         vendor = new Vendor();
         vendor.setId(1L);
-        vendor.setVendorType("CATERING");
+        vendor.setVendorType(VendorType.CATERING);
+
     }
 
     @Test

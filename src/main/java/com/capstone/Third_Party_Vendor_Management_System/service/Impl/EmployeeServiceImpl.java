@@ -6,6 +6,8 @@ import com.capstone.Third_Party_Vendor_Management_System.service.EmployeeService
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public List<Employee> getAllEmployees() {
-        logger.info("Fetching all employees");
-        return employeeRepository.findAll();
+    public Page<Employee> getAllEmployees(Pageable pageable) {
+        logger.info("Fetching paginated employees");
+        return employeeRepository.findAll(pageable);
     }
+
 
     @Override
     public Optional<Employee> getEmployeeById(Long id) {

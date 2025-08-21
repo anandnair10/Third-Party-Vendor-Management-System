@@ -70,4 +70,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
         logger.info("User deleted with ID: {}", id);
     }
+
+
+
 }

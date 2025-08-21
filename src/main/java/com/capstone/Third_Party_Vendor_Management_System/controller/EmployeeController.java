@@ -1,7 +1,9 @@
 package com.capstone.Third_Party_Vendor_Management_System.controller;
 
+import com.capstone.Third_Party_Vendor_Management_System.dto.AdminDTO;
 import com.capstone.Third_Party_Vendor_Management_System.dto.EmployeeDTO;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Employee;
+import com.capstone.Third_Party_Vendor_Management_System.mapper.AdminMapper;
 import com.capstone.Third_Party_Vendor_Management_System.mapper.EmployeeMapper;
 import com.capstone.Third_Party_Vendor_Management_System.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
@@ -19,25 +27,23 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    // Create new employee
-    @PostMapping("/createEmployee")
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-        Employee savedEmployee = employeeService.createEmployee(employee);
-        return ResponseEntity.ok(savedEmployee);
+    // 🔹 Get all employees
+
+    @GetMapping("/list")
+    public ResponseEntity<Page<EmployeeDTO>> getPaginatedEmployees(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<EmployeeDTO> employeePage = employeeService.getAllEmployees(pageable)
+                .map(EmployeeMapper::toDTO);
+
+        return ResponseEntity.ok(employeePage);
     }
 
-    // Get all employees
-    @GetMapping("/getAllEmployees")
-    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-        List<EmployeeDTO> employees = employeeService.getAllEmployees()
-                .stream()
-                .map(EmployeeMapper::toDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(employees);
-    }
 
-    // Get employee by ID
-    @GetMapping("/getEmployee/{id}")
+    // 🔹 Get employee by ID
+    @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
         Optional<Employee> employeeOptional = employeeService.getEmployeeById(id);
         return employeeOptional
@@ -45,18 +51,23 @@ public class EmployeeController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // 🔹 Create new employee
+    @PostMapping
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+        Employee savedEmployee = employeeService.createEmployee(employee);
+        return ResponseEntity.ok(savedEmployee);
+    }
 
-
-    // Update employee
-    @PutMapping("/updateEmployee/{id}")
+    // 🔹 Update employee
+    @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
         Optional<Employee> updated = employeeService.updateEmployee(id, updatedEmployee);
         return updated.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Delete employee
-    @DeleteMapping("/deleteEmployee/{id}")
+    // 🔹 Delete employee
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         boolean deleted = employeeService.deleteEmployee(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();

@@ -6,6 +6,10 @@ import com.capstone.Third_Party_Vendor_Management_System.service.Impl.EmployeeSe
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.*;
 
@@ -33,14 +37,19 @@ class EmployeeServiceImplTest {
     }
 
     @Test
-    void testGetAllEmployees() {
-        List<Employee> employees = List.of(employee);
-        when(employeeRepository.findAll()).thenReturn(employees);
+    void testGetAllEmployeesPaginated() {
+        Pageable pageable = PageRequest.of(0, 5);
+        List<Employee> employeeList = List.of(employee);
+        Page<Employee> page = new PageImpl<>(employeeList, pageable, employeeList.size());
 
-        List<Employee> result = employeeService.getAllEmployees();
+        when(employeeRepository.findAll(pageable)).thenReturn(page);
 
-        assertEquals(1, result.size());
+        Page<Employee> result = employeeService.getAllEmployees(pageable);
+
+        assertEquals(1, result.getTotalElements());
+        assertEquals("empuser", result.getContent().get(0).getUsername());
     }
+
     @Test
     void testGetEmployeeById() {
         when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
