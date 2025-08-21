@@ -4,6 +4,7 @@ import com.capstone.Third_Party_Vendor_Management_System.entities.Employee;
 import com.capstone.Third_Party_Vendor_Management_System.repository.EmployeeRepository;
 import com.capstone.Third_Party_Vendor_Management_System.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<Employee> getAllEmployees() {
@@ -27,6 +31,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee createEmployee(Employee employee) {
+        String hashedPassword = passwordEncoder.encode(employee.getPasswordHash());
+        employee.setPasswordHash(hashedPassword);
         return employeeRepository.save(employee);
     }
 
@@ -35,7 +41,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findById(id).map(employee -> {
             employee.setDepartment(updatedEmployee.getDepartment());
             employee.setUsername(updatedEmployee.getUsername());
-            employee.setPasswordHash(updatedEmployee.getPasswordHash());
+            String hashedPassword = passwordEncoder.encode(updatedEmployee.getPasswordHash());
+            employee.setPasswordHash(hashedPassword);
             return employeeRepository.save(employee);
         });
     }

@@ -8,6 +8,7 @@ import com.capstone.Third_Party_Vendor_Management_System.repository.VendorReposi
 import com.capstone.Third_Party_Vendor_Management_System.service.VendorService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -21,10 +22,15 @@ public class VendorServiceImpl implements VendorService {
     private VendorRepository vendorRepository;
 
     @Autowired
+
+    private PasswordEncoder passwordEncoder;
+  
     private RatingRepository ratingRepository;
 
     @Override
     public Vendor registerVendor(Vendor vendor) {
+        String hashedPassword = passwordEncoder.encode(vendor.getPasswordHash());
+        vendor.setPasswordHash(hashedPassword);
         return vendorRepository.save(vendor);
     }
 
