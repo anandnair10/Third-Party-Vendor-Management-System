@@ -1,5 +1,6 @@
 package com.capstone.Third_Party_Vendor_Management_System.service;
 
+import com.capstone.Third_Party_Vendor_Management_System.dto.TopRatedVendorDTO;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
 
 import java.util.List;
@@ -11,5 +12,9 @@ public interface VendorService {
     List<Vendor> getAllVendors();
     Vendor updateVendor(Long VendorId, Vendor vendor);
     Vendor deleteVendor(Long VendorId);
+
+    List<TopRatedVendorDTO> getVendorsSortedByRatingDesc();
+    Double getAverageRatingVendor(Long vendorId);
+
 
 }
