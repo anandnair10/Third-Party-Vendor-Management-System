@@ -1,6 +1,7 @@
 package com.capstone.Third_Party_Vendor_Management_System.service.Impl;
 
 import com.capstone.Third_Party_Vendor_Management_System.dto.TopRatedVendorDTO;
+import com.capstone.Third_Party_Vendor_Management_System.entities.Employee;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Rating;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
 import com.capstone.Third_Party_Vendor_Management_System.repository.RatingRepository;
@@ -10,6 +11,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,9 +55,9 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public List<Vendor> getAllVendors() {
+    public Page<Vendor> getAllVendors(Pageable pageable) {
         logger.info("Fetching all vendors");
-        return vendorRepository.findAll();
+        return vendorRepository.findAll(pageable);
     }
 
     @Override
