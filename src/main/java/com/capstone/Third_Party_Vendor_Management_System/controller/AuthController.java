@@ -16,6 +16,7 @@ public class AuthController {
         this.userRepository=userRepository;
     }
 
+    //Login
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDTO request){
         String email = request.getEmail();
