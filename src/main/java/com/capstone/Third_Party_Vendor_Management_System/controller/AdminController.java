@@ -17,12 +17,14 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    //Creating Admin
     @PostMapping("/createAdmin")
     public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin) {
         Admin savedAdmin = adminService.saveAdmin(admin);
         return ResponseEntity.ok(savedAdmin);
     }
 
+    //Get All Admin
     @GetMapping("/getAllAdmins")
     public ResponseEntity<List<AdminDTO>> getAllAdmins() {
         List<AdminDTO> admins = adminService.getAllAdmins()
@@ -32,6 +34,7 @@ public class AdminController {
         return ResponseEntity.ok(admins);
     }
 
+    //Update Admin by Id
     @PutMapping("/updateAdmin/{id}")
     public ResponseEntity<Admin> updateAdmin(@PathVariable Long id, @RequestBody Admin updatedAdmin) {
         Admin updated = adminService.updateAdmin(id, updatedAdmin);
@@ -42,6 +45,7 @@ public class AdminController {
         }
     }
 
+    //Get Admin by Id
     @GetMapping("/getAdmin/{id}")
     public ResponseEntity<AdminDTO> getAdminById(@PathVariable Long id) {
         Optional<Admin> adminOptional = adminService.getAdminById(id);
@@ -50,7 +54,7 @@ public class AdminController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
+    //Delete Admin by Id
     @DeleteMapping("/deleteAdmin/{id}")
     public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
         adminService.deleteAdmin(id);
