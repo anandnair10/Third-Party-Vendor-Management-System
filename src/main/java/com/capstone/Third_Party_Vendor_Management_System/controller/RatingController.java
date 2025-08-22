@@ -59,13 +59,14 @@ public class RatingController {
         return ResponseEntity.ok(savedRating);
     }
 
-    //Get Rating by Vendor Id
+    //Get All Rating by Vendor Id
     @GetMapping("/vendorRating/{vendorId}")
     public ResponseEntity<List<RatingDTO>> getRatingsByVendor(@PathVariable Long vendorId) {
         List<RatingDTO> response = ratingService.getRatingsForVendor(vendorId);
         return ResponseEntity.ok(response);
     }
 
+    //Get Average Rating for a Vendor
     @GetMapping("/Average/{vendorId}")
     public ResponseEntity<Double> getAverageRatingVendor(@PathVariable Long vendorId){
         Double avgRating = ratingService.getAverageRatingVendor(vendorId);
