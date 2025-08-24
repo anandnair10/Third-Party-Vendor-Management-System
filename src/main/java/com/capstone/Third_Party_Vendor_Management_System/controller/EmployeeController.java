@@ -37,7 +37,9 @@ public class EmployeeController {
 
 
     //Get employee by ID
+
     @GetMapping("/getEmployeeById/{id}")
+
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
         Optional<Employee> employeeOptional = employeeService.getEmployeeById(id);
         return employeeOptional
@@ -47,6 +49,7 @@ public class EmployeeController {
 
     //Create new employee
     @PostMapping("/createEmployee")
+
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
         Employee savedEmployee = employeeService.createEmployee(employee);
         return ResponseEntity.ok(savedEmployee);
@@ -54,6 +57,7 @@ public class EmployeeController {
 
     //Update employee
     @PutMapping("/updateEmployee/{id}")
+
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
         Optional<Employee> updated = employeeService.updateEmployee(id, updatedEmployee);
         return updated.map(ResponseEntity::ok)
@@ -62,6 +66,7 @@ public class EmployeeController {
 
     //Delete employee
     @DeleteMapping("/deleteEmployee/{id}")
+
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         boolean deleted = employeeService.deleteEmployee(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();

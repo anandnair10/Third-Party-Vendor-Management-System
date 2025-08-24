@@ -41,22 +41,6 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<RatingDTO> getRatingsForVendor(Long vendorId) {
-        logger.info("Fetching ratings for vendor ID: {}", vendorId);
-        List<Rating> ratings = ratingRepository.findByVendorId(vendorId);
-        logger.debug("Found {} ratings for vendor ID: {}", ratings.size(), vendorId);
-        return ratings.stream()
-                .map(RatingMapper::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Rating> getRatingsByEmployee(Long employeeId) {
-        logger.info("Fetching ratings by employee ID: {}", employeeId);
-        return ratingRepository.findByEmployeeId(employeeId);
-    }
-
-    @Override
     public Rating updateRating(Long ratingId, Rating updatedRating) {
         logger.info("Updating rating with ID: {}", ratingId);
         Rating existingRating = ratingRepository.findById(ratingId)
@@ -74,6 +58,22 @@ public class RatingServiceImpl implements RatingService {
         Rating savedRating = ratingRepository.save(existingRating);
         logger.info("Rating updated with ID: {}", savedRating.getRatingId());
         return savedRating;
+    }
+
+    @Override
+    public List<RatingDTO> getRatingsForVendor(Long vendorId) {
+        logger.info("Fetching ratings for vendor ID: {}", vendorId);
+        List<Rating> ratings = ratingRepository.findByVendorId(vendorId);
+        logger.debug("Found {} ratings for vendor ID: {}", ratings.size(), vendorId);
+        return ratings.stream()
+                .map(RatingMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Rating> getRatingsByEmployee(Long employeeId) {
+        logger.info("Fetching ratings by employee ID: {}", employeeId);
+        return ratingRepository.findByEmployeeId(employeeId);
     }
 
     public Double getAverageRatingVendor(Long vendorId) {

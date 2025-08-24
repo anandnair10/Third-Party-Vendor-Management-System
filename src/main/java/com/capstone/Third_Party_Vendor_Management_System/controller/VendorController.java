@@ -21,14 +21,16 @@ public class VendorController {
     @Autowired
     private VendorService vendorService;
 
-    //create vendor
+    //Create Vendor
     @PostMapping("/createVendor")
     public ResponseEntity<Vendor> createVendor(@RequestBody Vendor vendor){
         Vendor savedVendor =vendorService.registerVendor(vendor);
         return ResponseEntity.ok(savedVendor);
     }
 
-    //get list of vendors
+
+    //Implementing Paging for Vendor Listing
+
     @GetMapping("/VendorList")
     public ResponseEntity<Page<VendorDTO>> getAllVendors(
             @RequestParam(defaultValue = "0") int page,
@@ -40,25 +42,30 @@ public class VendorController {
         return ResponseEntity.ok(vendorPage);
     }
 
-    //get vendor by ID
+    //Get Vendor by Id
+
     @GetMapping("/getVendor/{id}")
     public ResponseEntity<?> getVendorById(@PathVariable Long id){
         return ResponseEntity.ok(vendorService.getVendorById(id));
     }
 
-    //update vendor by ID
+
+    //Update Vendor by ID
+
     @PutMapping("/updateVendor/{id}")
     public ResponseEntity<Vendor> updateVendor(@PathVariable Long id, @RequestBody Vendor vendor){
         return ResponseEntity.ok(vendorService.updateVendor(id, vendor));
     }
 
-    //delete vendor by ID
+
+    //Delete Vendor by ID
+
     @DeleteMapping("/deleteVendor/{id}")
     public ResponseEntity<Vendor> deleteVendor(@PathVariable Long id){
         return ResponseEntity.ok(vendorService.deleteVendor(id));
     }
 
-    //sort vendors by rating
+    //Sort Vendor by Rating
     @GetMapping("/sorted-by-rating")
     public ResponseEntity<List<TopRatedVendorDTO>> getVendorsSortedByRatingDesc() {
         List<TopRatedVendorDTO> sortedVendors = vendorService.getVendorsSortedByRatingDesc();
