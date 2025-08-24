@@ -5,6 +5,7 @@ import com.capstone.Third_Party_Vendor_Management_System.mapper.AdminMapper;
 import com.capstone.Third_Party_Vendor_Management_System.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admins")
+
 public class AdminController {
 
     @Autowired
@@ -28,7 +30,7 @@ public class AdminController {
 
 
     //getting all admins
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getAllAdmins")
     public ResponseEntity<List<AdminDTO>> getAllAdmins() {
         List<AdminDTO> admins = adminService.getAllAdmins()

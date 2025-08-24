@@ -7,6 +7,7 @@ import com.capstone.Third_Party_Vendor_Management_System.service.ComplianceServi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,7 @@ public class ComplianceController {
     }
 
     // Create a new document
+    @PreAuthorize("hasAnyRole('VENDOR','ADMIN)")
     @PostMapping("/upload/{vendorId}")
     public ResponseEntity<List<String>> uploadComplianceDocs(
             @PathVariable Long vendorId,
@@ -35,21 +37,23 @@ public class ComplianceController {
         return ResponseEntity.ok(storedDocs);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     //Get Document by Vendor Id
-
     @GetMapping("/getDocs/{vendorId}")
     public ResponseEntity<List<Compliance>> getVendorDocs(@PathVariable Long vendorId){
         return ResponseEntity.ok(complianceDocService.getDocumentByVendorId(vendorId));
     }
 
     // Delete a document
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteDoc/{id}")
     public ResponseEntity<Void> deleteDocument(@PathVariable Long id) {
         boolean deleted = complianceDocService.deleteDocument(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     //updating verification status after manual verification by admins
     //http://localhost:8080/api/compliance-docs/update-status/vendor/8?status=APPROVED
 

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class VendorController {
     @Autowired
     private VendorService vendorService;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'VENDOR')")
     //Create Vendor
     @PostMapping("/createVendor")
     public ResponseEntity<Vendor> createVendor(@RequestBody Vendor vendor){
@@ -29,8 +31,8 @@ public class VendorController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
     //Implementing Paging for Vendor Listing
-
     @GetMapping("/VendorList")
     public ResponseEntity<Page<VendorDTO>> getAllVendors(
             @RequestParam(defaultValue = "0") int page,
@@ -42,29 +44,32 @@ public class VendorController {
         return ResponseEntity.ok(vendorPage);
     }
 
-    //Get Vendor by Id
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    //Get Vendor by Id
     @GetMapping("/getVendor/{id}")
     public ResponseEntity<?> getVendorById(@PathVariable Long id){
         return ResponseEntity.ok(vendorService.getVendorById(id));
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN','VENDOR')")
     //Update Vendor by ID
-
     @PutMapping("/updateVendor/{id}")
     public ResponseEntity<Vendor> updateVendor(@PathVariable Long id, @RequestBody Vendor vendor){
         return ResponseEntity.ok(vendorService.updateVendor(id, vendor));
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     //Delete Vendor by ID
-
     @DeleteMapping("/deleteVendor/{id}")
     public ResponseEntity<Vendor> deleteVendor(@PathVariable Long id){
         return ResponseEntity.ok(vendorService.deleteVendor(id));
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
     //Sort Vendor by Rating
     @GetMapping("/sorted-by-rating")
     public ResponseEntity<List<TopRatedVendorDTO>> getVendorsSortedByRatingDesc() {

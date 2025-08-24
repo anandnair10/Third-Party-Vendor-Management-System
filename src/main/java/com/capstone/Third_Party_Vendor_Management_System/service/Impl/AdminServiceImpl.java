@@ -4,6 +4,7 @@ import com.capstone.Third_Party_Vendor_Management_System.entities.Admin;
 import com.capstone.Third_Party_Vendor_Management_System.repository.AdminRepository;
 import com.capstone.Third_Party_Vendor_Management_System.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,13 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Admin saveAdmin(Admin admin){
         logger.info("Saving admin: {}", admin);
+        String hashedPassword = passwordEncoder.encode(admin.getPasswordHash());
+        admin.setPasswordHash(hashedPassword);
         return adminRepository.save(admin);
     }
 
@@ -41,7 +47,8 @@ public class AdminServiceImpl implements AdminService {
             admin.setEmail(updatedAdmin.getEmail());
             admin.setPhoneNumber(updatedAdmin.getPhoneNumber());
             admin.setRole(updatedAdmin.getRole());
-            admin.setPasswordHash(updatedAdmin.getPasswordHash());
+            String hashedPassword = passwordEncoder.encode(updatedAdmin.getPasswordHash());
+            admin.setPasswordHash(hashedPassword);
             logger.info("Updated admin: {}", admin);
             return adminRepository.save(admin);
         }).orElseThrow(() -> {

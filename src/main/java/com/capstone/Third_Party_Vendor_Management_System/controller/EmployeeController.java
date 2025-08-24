@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -23,6 +24,7 @@ public class EmployeeController {
 
     //Get all employees
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/list")
     public ResponseEntity<Page<EmployeeDTO>> getPaginatedEmployees(
             @RequestParam(defaultValue = "0") int page,
@@ -36,8 +38,9 @@ public class EmployeeController {
     }
 
 
-    //Get employee by ID
 
+    // Get employee by ID
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getEmployeeById/{id}")
 
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
@@ -47,15 +50,19 @@ public class EmployeeController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    //Create new employee
-    @PostMapping("/createEmployee")
 
+    
+    //Create new employee
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PostMapping("/createEmployee")
+    
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
         Employee savedEmployee = employeeService.createEmployee(employee);
         return ResponseEntity.ok(savedEmployee);
     }
 
-    //Update employee
+    // Update employee
+    @PreAuthorize("hasRole('EMPLOYEE')")
     @PutMapping("/updateEmployee/{id}")
 
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
@@ -64,7 +71,10 @@ public class EmployeeController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    //Delete employee
+
+    //  Delete employee
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteEmployee/{id}")
 
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
