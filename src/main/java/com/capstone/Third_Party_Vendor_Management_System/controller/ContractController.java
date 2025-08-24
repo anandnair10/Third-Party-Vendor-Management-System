@@ -4,6 +4,7 @@ import com.capstone.Third_Party_Vendor_Management_System.entities.Contract;
 import com.capstone.Third_Party_Vendor_Management_System.service.ContractService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,11 +12,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/contracts")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN')")
 public class ContractController {
 
     private final ContractService contractService;
 
     // Create a new contract
+
     @PostMapping("/createContract")
     public ResponseEntity<Contract> createContract(@RequestBody Contract contract) {
         Contract savedContract = contractService.createContract(contract);

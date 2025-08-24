@@ -10,4 +10,5 @@ public class RatingDTO {
     private Long employeeId;
     private Integer ratingValue;
     private String feedback;
+
 }

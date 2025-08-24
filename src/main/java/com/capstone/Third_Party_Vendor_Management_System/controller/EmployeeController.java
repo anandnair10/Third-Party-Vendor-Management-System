@@ -8,6 +8,7 @@ import com.capstone.Third_Party_Vendor_Management_System.mapper.EmployeeMapper;
 import com.capstone.Third_Party_Vendor_Management_System.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class EmployeeController {
 
     // 🔹 Get all employees
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/list")
     public ResponseEntity<Page<EmployeeDTO>> getPaginatedEmployees(
             @RequestParam(defaultValue = "0") int page,
@@ -43,6 +45,8 @@ public class EmployeeController {
 
 
     // 🔹 Get employee by ID
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
         Optional<Employee> employeeOptional = employeeService.getEmployeeById(id);
@@ -52,6 +56,8 @@ public class EmployeeController {
     }
 
     // 🔹 Create new employee
+
+    @PreAuthorize("hasRole('EMPLOYEE')")
     @PostMapping
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
         Employee savedEmployee = employeeService.createEmployee(employee);
@@ -59,6 +65,8 @@ public class EmployeeController {
     }
 
     // 🔹 Update employee
+
+    @PreAuthorize("hasRole('EMPLOYEE')")
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
         Optional<Employee> updated = employeeService.updateEmployee(id, updatedEmployee);
@@ -67,6 +75,8 @@ public class EmployeeController {
     }
 
     // 🔹 Delete employee
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         boolean deleted = employeeService.deleteEmployee(id);

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,12 +25,15 @@ public class VendorController {
     @Autowired
     private VendorService vendorService;
 
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'VENDOR')")
     @PostMapping("/createVendor")
     public ResponseEntity<Vendor> createVendor(@RequestBody Vendor vendor){
         Vendor savedVendor =vendorService.registerVendor(vendor);
         return ResponseEntity.ok(savedVendor);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
     @GetMapping("/VendorList")
     public ResponseEntity<Page<VendorDTO>> getAllVendors(
             @RequestParam(defaultValue = "0") int page,
@@ -41,20 +45,30 @@ public class VendorController {
         return ResponseEntity.ok(vendorPage);
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/getVendor/{id}")
     public ResponseEntity<?> getVendorById(@PathVariable Long id){
         return ResponseEntity.ok(vendorService.getVendorById(id));
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN','VENDOR')")
+
     @PutMapping("/updateVendor/{id}")
     public ResponseEntity<Vendor> updateVendor(@PathVariable Long id, @RequestBody Vendor vendor){
         return ResponseEntity.ok(vendorService.updateVendor(id, vendor));
     }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/deleteVendor/{id}")
     public ResponseEntity<Vendor> deleteVendor(@PathVariable Long id){
         return ResponseEntity.ok(vendorService.deleteVendor(id));
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
     @GetMapping("/sorted-by-rating")
     public ResponseEntity<List<TopRatedVendorDTO>> getVendorsSortedByRatingDesc() {
         List<TopRatedVendorDTO> sortedVendors = vendorService.getVendorsSortedByRatingDesc();

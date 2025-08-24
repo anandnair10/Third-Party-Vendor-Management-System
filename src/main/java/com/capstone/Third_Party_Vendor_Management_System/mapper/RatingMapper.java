@@ -8,6 +8,7 @@ import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
 import java.time.LocalDate;
 
 public class RatingMapper {
+
     public static Rating toEntity(RatingDTO dto, Employee employee, Vendor vendor) {
         return Rating.builder()
                 .employee(employee)
@@ -24,6 +25,7 @@ public class RatingMapper {
         dto.setFeedback(rating.getFeedback());
         dto.setEmployeeId(rating.getEmployee().getId());
         dto.setVendorId(rating.getVendor().getId());
+
         return dto;
     }
 }

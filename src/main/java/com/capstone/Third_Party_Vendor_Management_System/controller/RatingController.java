@@ -11,6 +11,7 @@ import com.capstone.Third_Party_Vendor_Management_System.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class RatingController {
     @Autowired
     private VendorRepository vendorRepository;
 
+    @PreAuthorize("hasRole('EMPLOYEE')")
     @PostMapping("/Rating")
     public ResponseEntity<Rating> createRating(@RequestBody RatingDTO dto) {
         Employee employee = employeeRepository.findById(dto.getEmployeeId())
@@ -41,7 +43,7 @@ public class RatingController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedRating);
     }
-
+    @PreAuthorize("hasRole('EMPLOYEE')")
     @PutMapping("/updateRating/{ratingId}")
     public ResponseEntity<Rating> updateRating(@PathVariable Long ratingId,
                                                @RequestBody RatingDTO dto) {
@@ -57,12 +59,14 @@ public class RatingController {
         return ResponseEntity.ok(savedRating);
     }
 
+    @PreAuthorize("hasRole('ADMIN', 'EMPLOYEE')")
     @GetMapping("/vendorRating/{vendorId}")
     public ResponseEntity<List<RatingDTO>> getRatingsByVendor(@PathVariable Long vendorId) {
         List<RatingDTO> response = ratingService.getRatingsForVendor(vendorId);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADMIN','EMPLOYEE')")
     @GetMapping("/Average/{vendorId}")
     public ResponseEntity<Double> getAverageRatingVendor(@PathVariable Long vendorId){
         Double avgRating = ratingService.getAverageRatingVendor(vendorId);
