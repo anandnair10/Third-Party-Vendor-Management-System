@@ -28,6 +28,7 @@ public class RatingController {
     @Autowired
     private VendorRepository vendorRepository;
 
+    //giving the rating to the vendors
     @PostMapping("/Rating")
     public ResponseEntity<Rating> createRating(@RequestBody RatingDTO dto) {
         Employee employee = employeeRepository.findById(dto.getEmployeeId())
@@ -42,6 +43,7 @@ public class RatingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedRating);
     }
 
+    //updating their rating
     @PutMapping("/updateRating/{ratingId}")
     public ResponseEntity<Rating> updateRating(@PathVariable Long ratingId,
                                                @RequestBody RatingDTO dto) {
@@ -57,12 +59,14 @@ public class RatingController {
         return ResponseEntity.ok(savedRating);
     }
 
-    @GetMapping("/vendorRating/{vendorId}")
+    //get ratings by their IDs
+    @GetMapping("/getRatingByID/{vendorId}")
     public ResponseEntity<List<RatingDTO>> getRatingsByVendor(@PathVariable Long vendorId) {
         List<RatingDTO> response = ratingService.getRatingsForVendor(vendorId);
         return ResponseEntity.ok(response);
     }
 
+    //get average rating of each vendor
     @GetMapping("/Average/{vendorId}")
     public ResponseEntity<Double> getAverageRatingVendor(@PathVariable Long vendorId){
         Double avgRating = ratingService.getAverageRatingVendor(vendorId);

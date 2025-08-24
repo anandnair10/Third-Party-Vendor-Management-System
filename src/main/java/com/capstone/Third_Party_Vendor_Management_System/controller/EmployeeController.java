@@ -1,23 +1,17 @@
 package com.capstone.Third_Party_Vendor_Management_System.controller;
 
-import com.capstone.Third_Party_Vendor_Management_System.dto.AdminDTO;
 import com.capstone.Third_Party_Vendor_Management_System.dto.EmployeeDTO;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Employee;
-import com.capstone.Third_Party_Vendor_Management_System.mapper.AdminMapper;
 import com.capstone.Third_Party_Vendor_Management_System.mapper.EmployeeMapper;
 import com.capstone.Third_Party_Vendor_Management_System.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 
 @RestController
@@ -27,7 +21,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    // 🔹 Get all employees
+    //Get all employees
 
     @GetMapping("/list")
     public ResponseEntity<Page<EmployeeDTO>> getPaginatedEmployees(
@@ -42,8 +36,8 @@ public class EmployeeController {
     }
 
 
-    // 🔹 Get employee by ID
-    @GetMapping("/{id}")
+    //Get employee by ID
+    @GetMapping("/getEmployeeById/{id}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
         Optional<Employee> employeeOptional = employeeService.getEmployeeById(id);
         return employeeOptional
@@ -51,23 +45,23 @@ public class EmployeeController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // 🔹 Create new employee
-    @PostMapping
+    //Create new employee
+    @PostMapping("/createEmployee")
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
         Employee savedEmployee = employeeService.createEmployee(employee);
         return ResponseEntity.ok(savedEmployee);
     }
 
-    // 🔹 Update employee
-    @PutMapping("/{id}")
+    //Update employee
+    @PutMapping("/updateEmployee/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
         Optional<Employee> updated = employeeService.updateEmployee(id, updatedEmployee);
         return updated.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // 🔹 Delete employee
-    @DeleteMapping("/{id}")
+    //Delete employee
+    @DeleteMapping("/deleteEmployee/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         boolean deleted = employeeService.deleteEmployee(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();

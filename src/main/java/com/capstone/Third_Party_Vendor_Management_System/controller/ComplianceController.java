@@ -35,6 +35,7 @@ public class ComplianceController {
         return ResponseEntity.ok(storedDocs);
     }
 
+    //get documents by ID
     @GetMapping("/getDocs/{vendorId}")
     public ResponseEntity<List<Compliance>> getVendorDocs(@PathVariable Long vendorId){
         return ResponseEntity.ok(complianceDocService.getDocumentByVendorId(vendorId));
@@ -46,7 +47,7 @@ public class ComplianceController {
         boolean deleted = complianceDocService.deleteDocument(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
-    
+    //updating verification status after manual verification by admins
     //http://localhost:8080/api/compliance-docs/update-status/vendor/8?status=APPROVED
     @PatchMapping("/update-status/vendor/{vendorId}")
     public ResponseEntity<String> updateDocumentsByVendor(
