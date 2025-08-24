@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        if (user.getRole() == null || (!user.getRole().name().equals("ADMIN") && !user.getRole().name().equals("EMPLOYEE"))) {
+        if (user.getRole() == null || (!user.getRole().name().equals("ADMIN") && !user.getRole().name().equals("EMPLOYEE") && !user.getRole().name().equals("VENDOR"))) {
             throw new UsernameNotFoundException("Access denied: Invalid role");
         }
 
