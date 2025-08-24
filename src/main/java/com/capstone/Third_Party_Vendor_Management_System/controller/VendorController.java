@@ -1,10 +1,8 @@
 package com.capstone.Third_Party_Vendor_Management_System.controller;
 
-import com.capstone.Third_Party_Vendor_Management_System.dto.EmployeeDTO;
 import com.capstone.Third_Party_Vendor_Management_System.dto.TopRatedVendorDTO;
 import com.capstone.Third_Party_Vendor_Management_System.dto.VendorDTO;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
-import com.capstone.Third_Party_Vendor_Management_System.mapper.EmployeeMapper;
 import com.capstone.Third_Party_Vendor_Management_System.mapper.VendorMapper;
 import com.capstone.Third_Party_Vendor_Management_System.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/vendors")
@@ -31,7 +28,9 @@ public class VendorController {
         return ResponseEntity.ok(savedVendor);
     }
 
+
     //Implementing Paging for Vendor Listing
+
     @GetMapping("/VendorList")
     public ResponseEntity<Page<VendorDTO>> getAllVendors(
             @RequestParam(defaultValue = "0") int page,
@@ -42,19 +41,25 @@ public class VendorController {
                 .map(VendorMapper::toDTO);
         return ResponseEntity.ok(vendorPage);
     }
+
     //Get Vendor by Id
+
     @GetMapping("/getVendor/{id}")
     public ResponseEntity<?> getVendorById(@PathVariable Long id){
         return ResponseEntity.ok(vendorService.getVendorById(id));
     }
 
-    //Update Vendor by Id
+
+    //Update Vendor by ID
+
     @PutMapping("/updateVendor/{id}")
     public ResponseEntity<Vendor> updateVendor(@PathVariable Long id, @RequestBody Vendor vendor){
         return ResponseEntity.ok(vendorService.updateVendor(id, vendor));
     }
 
-    //Delete Vendor by Id
+
+    //Delete Vendor by ID
+
     @DeleteMapping("/deleteVendor/{id}")
     public ResponseEntity<Vendor> deleteVendor(@PathVariable Long id){
         return ResponseEntity.ok(vendorService.deleteVendor(id));
