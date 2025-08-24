@@ -2,7 +2,9 @@ package com.capstone.Third_Party_Vendor_Management_System.controller;
 
 import com.capstone.Third_Party_Vendor_Management_System.dto.TopRatedVendorDTO;
 import com.capstone.Third_Party_Vendor_Management_System.dto.VendorDTO;
+import com.capstone.Third_Party_Vendor_Management_System.dto.VendorRiskDTO;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
+import com.capstone.Third_Party_Vendor_Management_System.entities.enums.RiskLevel;
 import com.capstone.Third_Party_Vendor_Management_System.mapper.VendorMapper;
 import com.capstone.Third_Party_Vendor_Management_System.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/vendors")
@@ -76,4 +80,23 @@ public class VendorController {
         List<TopRatedVendorDTO> sortedVendors = vendorService.getVendorsSortedByRatingDesc();
         return ResponseEntity.ok(sortedVendors);
     }
+
+    // Return vendors sorted by risk level
+    @GetMapping("/sorted-by-risk")
+    public ResponseEntity<List<VendorRiskDTO>> getSortedVendorsByRisk() {
+        List<Vendor> vendors = vendorService.getAllVendor();
+
+        List<VendorRiskDTO> dtos = vendors.stream()
+                .map(v -> {
+                    Double avgRating = vendorService.getAverageRatingVendor(v.getId());
+                    RiskLevel risk = vendorService.calculateRiskLevel(avgRating);
+                    return new VendorRiskDTO(v.getId(), v.getFullName(), avgRating, risk);
+                })
+                .sorted(Comparator.comparing(VendorRiskDTO::getRiskLevel)) // LOW → HIGH
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
+    }
+
+
 }
