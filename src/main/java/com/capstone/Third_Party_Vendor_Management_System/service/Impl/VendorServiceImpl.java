@@ -4,6 +4,7 @@ import com.capstone.Third_Party_Vendor_Management_System.dto.TopRatedVendorDTO;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Employee;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Rating;
 import com.capstone.Third_Party_Vendor_Management_System.entities.Vendor;
+import com.capstone.Third_Party_Vendor_Management_System.entities.enums.RiskLevel;
 import com.capstone.Third_Party_Vendor_Management_System.repository.RatingRepository;
 import com.capstone.Third_Party_Vendor_Management_System.repository.VendorRepository;
 import com.capstone.Third_Party_Vendor_Management_System.service.VendorService;
@@ -131,4 +132,19 @@ public class VendorServiceImpl implements VendorService {
         logger.debug("Average rating for vendor ID {}: {}", vendorId, average);
         return average;
     }
+
+    // Determine risk level based on average rating
+    public RiskLevel calculateRiskLevel(Double rating) {
+        if (rating == null) return RiskLevel.HIGH;
+        if (rating <= 2.5) return RiskLevel.HIGH;
+        else if (rating <= 3.8) return RiskLevel.MEDIUM;
+        else return RiskLevel.LOW;
+    }
+
+    @Override
+    public List<Vendor> getAllVendor() {
+        return vendorRepository.findAll();
+    }
+
+
 }
