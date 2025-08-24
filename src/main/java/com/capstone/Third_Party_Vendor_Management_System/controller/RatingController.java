@@ -84,4 +84,11 @@ public class RatingController {
         return ResponseEntity.ok(avgRating);
     }
 
+    // Get all ratings submitted by a specific employee
+    @GetMapping("/employee/{employeeId}")
+    public ResponseEntity<List<Rating>> getRatingsByEmployee(@PathVariable Long employeeId) {
+        List<Rating> ratings = ratingService.getRatingsByEmployee(employeeId);
+        return ResponseEntity.ok(ratings);
+    }
+
 }
