@@ -1,4 +1,6 @@
-Third-Party Vendor Management System
+**Third-Party Vendor Management System**
+
+
 This is a Spring Boot REST API project designed to streamline the management of third-party vendors within an organization. The system supports role-based access for Admins, Employees, and Vendors, enabling efficient onboarding, contract management, vendor rating, and document verification.
 
 Features:
